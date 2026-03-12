@@ -41,7 +41,7 @@ export default async function AppLayout({
                         <FileUp size={18} />
                         Upload Forms
                     </Link>
-                    <Link href="/clients" className="sidebar-link hover:bg-[rgba(255,255,255,0.06)] opacity-50 cursor-not-allowed">
+                    <Link href="/clients" className="sidebar-link hover:bg-[rgba(255,255,255,0.06)]">
                         <Users size={18} />
                         Clients Database
                     </Link>
@@ -89,10 +89,10 @@ export default async function AppLayout({
                         <FileUp size={20} />
                         <span>Upload</span>
                     </Link>
-                    <div className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-500 text-xs opacity-50 cursor-not-allowed">
+                    <Link href="/clients" className="flex-1 flex flex-col items-center justify-center gap-1 py-3 text-slate-400 hover:text-white transition-colors text-xs">
                         <Users size={20} />
                         <span>Clients</span>
-                    </div>
+                    </Link>
                 </nav>
             </main>
         </div>

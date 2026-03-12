@@ -1,8 +1,8 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { File, UploadCloud, ChevronRight, FileText, Settings, Users } from 'lucide-react';
-import { formatRelativeDate, getStatusColor, getStatusLabel } from '@/lib/utils';
+import { File, UploadCloud, FileText, Settings, Users } from 'lucide-react';
+import { ClientCard } from '@/components/dashboard/client-card';
 
 export default async function DashboardPage() {
     const supabase = await createClient();
@@ -109,62 +109,7 @@ export default async function DashboardPage() {
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {clients?.map(client => (
-                            <div key={client.id} className="glass-card overflow-hidden hover:border-slate-700/50 transition-colors flex flex-col h-full">
-                                <div className="p-5 border-b border-[var(--border)] flex items-center justify-between bg-white/[0.02]">
-                                    <div className="flex items-center gap-3 overflow-hidden pr-2">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-sm shadow-inner shadow-white/20 shrink-0">
-                                            {client.name.substring(0, 2).toUpperCase()}
-                                        </div>
-                                        <div className="min-w-0">
-                                            <h3 className="font-semibold text-white text-base truncate" title={client.name}>{client.name}</h3>
-                                            <p className="text-xs text-slate-400">Added {formatRelativeDate(client.created_at)}</p>
-                                        </div>
-                                    </div>
-                                    <Link href={`/clients/${client.id}`} className="text-xs font-medium text-blue-400 hover:text-blue-300 hover:bg-blue-400/10 px-3 py-1.5 rounded-full transition-colors flex items-center shrink-0">
-                                        View All
-                                        <ChevronRight className="w-3 h-3 ml-1" />
-                                    </Link>
-                                </div>
-
-                                <div className="p-2 flex-grow">
-                                    {client.documents && client.documents.length > 0 ? (
-                                        <ul className="space-y-1">
-                                            {client.documents.slice(0, 3).map((doc: { id: string, file_type: string, file_name: string, status: string }) => (
-                                                <li key={doc.id}>
-                                                    <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/[0.03] transition-colors group">
-                                                        <div className="flex items-center gap-3 overflow-hidden flex-1">
-                                                            <File className={`w-5 h-5 shrink-0 ${doc.file_type === 'pdf' ? 'text-red-400' : doc.file_type === 'docx' ? 'text-blue-400' : 'text-emerald-400'}`} />
-                                                            <span className="text-sm text-slate-300 truncate font-medium group-hover:text-white transition-colors" title={doc.file_name}>
-                                                                {doc.file_name}
-                                                            </span>
-                                                        </div>
-                                                        <div className="flex items-center gap-3 shrink-0 ml-4">
-                                                            <span className={`text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider font-semibold border ${getStatusColor(doc.status)}`}>
-                                                                {getStatusLabel(doc.status)}
-                                                            </span>
-                                                            <Link href={`/documents/${doc.id}`} className="text-slate-400 hover:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity p-1" title="View Document">
-                                                                <ChevronRight className="w-4 h-4" />
-                                                            </Link>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <div className="p-6 text-center text-sm text-slate-500 h-full flex items-center justify-center">
-                                            No documents yet.
-                                        </div>
-                                    )}
-                                </div>
-
-                                {client.documents && client.documents.length > 3 && (
-                                    <div className="px-5 py-3 border-t border-[var(--border)] bg-white/[0.01]">
-                                        <Link href={`/clients/${client.id}`} className="text-xs text-slate-400 hover:text-white transition-colors flex items-center justify-center">
-                                            + {client.documents.length - 3} more {client.documents.length - 3 === 1 ? 'document' : 'documents'}
-                                        </Link>
-                                    </div>
-                                )}
-                            </div>
+                            <ClientCard key={client.id} client={client} />
                         ))}
                     </div>
                 </div>

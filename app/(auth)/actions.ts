@@ -1,10 +1,12 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createServiceClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function login(prevState: unknown, formData: FormData) {
+export type ActionState = { error?: string; redirect?: string };
+
+export async function login(prevState: ActionState, formData: FormData): Promise<ActionState> {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
@@ -16,42 +18,67 @@ export async function login(prevState: unknown, formData: FormData) {
     });
 
     if (error) {
+        console.error('[login error]', error.message, error.status, error.code);
         return { error: error.message };
     }
 
     revalidatePath('/', 'layout');
-    redirect('/dashboard');
+    // Return a redirect signal instead of calling redirect() directly,
+    // which breaks useActionState by returning HTML instead of JSON.
+    return { redirect: '/dashboard' };
 }
 
-export async function register(prevState: unknown, formData: FormData) {
+export async function register(prevState: ActionState, formData: FormData): Promise<ActionState> {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const fullName = formData.get('fullName') as string;
     const agencyName = formData.get('agencyName') as string;
 
-    const supabase = await createClient();
+    // Use the admin client so we can set email_confirm: true,
+    // bypassing the email verification step for this prototype.
+    const adminClient = await createServiceClient();
 
-    // Supabase Auth requires an origin for email redirects if enabled, 
-    // but for simple password auth it will just create the user.
-    const { error } = await supabase.auth.signUp({
+    const { error } = await adminClient.auth.admin.createUser({
         email,
         password,
-        options: {
-            data: {
-                full_name: fullName,
-                agency_name: agencyName,
-            },
+        email_confirm: true,
+        user_metadata: {
+            full_name: fullName,
+            agency_name: agencyName,
         },
     });
 
     if (error) {
-        return { error: error.message };
+        // If email already exists (possibly unconfirmed from a previous attempt),
+        // find and confirm the existing user rather than blocking registration.
+        if (error.message.toLowerCase().includes('already')) {
+            const { data: list } = await adminClient.auth.admin.listUsers();
+            const existing = list?.users?.find((u) => u.email === email);
+            if (existing) {
+                await adminClient.auth.admin.updateUserById(existing.id, {
+                    password,
+                    email_confirm: true,
+                    user_metadata: { full_name: fullName, agency_name: agencyName },
+                });
+            } else {
+                return { error: 'Account already exists. Please sign in instead.' };
+            }
+        } else {
+            console.error('[register error]', error.message);
+            return { error: error.message };
+        }
     }
 
-    // Assuming email confirmation is off for this prototype, we can redirect to login or dashboard.
-    // Sometimes signUp automatically logs the user in if email confirmation is disabled.
+    // Now sign the user in so they get a session cookie.
+    const supabase = await createClient();
+    const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+    if (loginError) {
+        console.error('[post-register login error]', loginError.message);
+        return { error: loginError.message };
+    }
+
     revalidatePath('/', 'layout');
-    redirect('/dashboard');
+    return { redirect: '/dashboard' };
 }
 
 export async function logout() {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServiceClient } from '@/lib/supabase/server';
 import { parsePdf } from '@/lib/parsers/pdf';
 import { parseDocx } from '@/lib/parsers/docx';
+import { parseCsv } from '@/lib/parsers/csv';
 import { analyseDocument } from '@/lib/ai/claude';
 import { Resend } from 'resend';
 import { cleanSummary } from '@/lib/utils';
@@ -9,7 +10,7 @@ import { cleanSummary } from '@/lib/utils';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // We might want to allow this to run for a while if it's a large document
-export const maxDuration = 60; // seconds on Vercel Edge/Hobby
+export const maxDuration = 180; // 3 minutes on Vercel Pro/Enterprise
 
 export async function POST(
     request: NextRequest,
@@ -54,11 +55,12 @@ export async function POST(
             textContent = await parsePdf(buffer);
         } else if (document.file_type === 'docx') {
             textContent = await parseDocx(buffer);
+        } else if (document.file_type === 'csv') {
+            textContent = await parseCsv(buffer);
+        } else if (document.file_type === 'txt') {
+            textContent = buffer.toString('utf-8').trim();
         } else if (document.file_type === 'image') {
-            // For MVP, images are skipped or we need a different Claude prompt handling for vision.
-            // But since our prompt assumes text input for now, we'll throw an error if image.
-            // Let's implement text extraction using vision API soon.
-            throw new Error('Image parsing is not yet supported in this iteration. Please upload PDF or DOCX.');
+            throw new Error('Image parsing is not yet supported. Please upload PDF, DOCX, CSV, or TXT.');
         } else {
             throw new Error(`Unsupported file type: ${document.file_type}`);
         }

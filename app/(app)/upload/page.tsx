@@ -50,14 +50,25 @@ export default function DocumentUpload() {
     };
 
     const addFiles = (newFiles: File[]) => {
-        const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png', 'image/webp'];
+        const validTypes = [
+            'application/pdf',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+            'text/plain',
+            'text/csv',
+            'application/csv',
+            // Some OS/browser combos emit an empty MIME type for .txt files
+            '',
+        ];
 
         const mappedFiles: UploadFile[] = newFiles.map(f => ({
             file: f,
             id: Math.random().toString(36).substring(7),
             progress: 0,
             status: validTypes.includes(f.type) ? 'pending' : 'error',
-            error: validTypes.includes(f.type) ? undefined : 'Unsupported file type. Use PDF, DOCX, or Image.'
+            error: validTypes.includes(f.type) ? undefined : 'Unsupported file type. Use PDF, DOCX, CSV, TXT, or Image.'
         }));
 
         setFiles(prev => [...prev, ...mappedFiles]);
@@ -157,14 +168,14 @@ export default function DocumentUpload() {
                     className="hidden"
                     ref={fileInputRef}
                     onChange={handleFileInput}
-                    accept=".pdf,.docx,.doc,image/jpeg,image/png,image/webp"
+                    accept=".pdf,.docx,.doc,.txt,.csv,image/jpeg,image/png,image/webp"
                 />
                 <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mb-4 text-blue-400">
                     <UploadCloud size={32} />
                 </div>
                 <h3 className="text-lg font-medium text-white mb-2">Click or drag files to upload</h3>
                 <p className="text-slate-400 text-sm max-w-sm">
-                    Supported formats: PDF, DOCX, JPEG, PNG, WEBP.
+                    Supported formats: PDF, DOCX, CSV, TXT, JPEG, PNG, WEBP.
                     <br className="hidden sm:block" />
                     <span className="text-amber-400">Please upload each onboarding response file as a separate document.</span>
                 </p>

@@ -177,7 +177,7 @@ export default async function DocumentPage({
                                         <div>
                                             <h4 className="text-[15px] font-medium text-zinc-200">{block.question}</h4>
                                             <div className="mt-3 p-4 bg-black/20 rounded-lg border border-white/5">
-                                                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2 block">Client&apos;s Answer</span>
+                                                <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2 block">Client Context & Synthesis</span>
                                                 <p className="text-zinc-400 text-sm leading-relaxed">{block.original_response}</p>
                                             </div>
                                         </div>
@@ -189,7 +189,7 @@ export default async function DocumentPage({
                                     <div>
                                         <div className="flex items-center space-x-2 mb-3">
                                             <Sparkles className="w-4 h-4 text-indigo-400" />
-                                            <span className="text-sm font-medium text-indigo-300">Strategic Translation</span>
+                                            <span className="text-sm font-medium text-indigo-300">Agency Objective</span>
                                         </div>
                                         <p className="text-white text-[15px] leading-relaxed pl-6 border-l-2 border-indigo-500/50">
                                             {block.improved_response}

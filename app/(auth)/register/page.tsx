@@ -1,12 +1,13 @@
 'use client';
 
-import { useActionState } from 'react';
-import { register } from '../actions';
+import { useActionState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { register, type ActionState } from '../actions';
 import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
 
-const initialState = { error: '' };
+const initialState: ActionState = { error: '', redirect: '' };
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -26,8 +27,14 @@ function SubmitButton() {
 }
 
 export default function RegisterPage() {
+    const router = useRouter();
     const [state, formAction] = useActionState(register, initialState);
 
+    useEffect(() => {
+        if (state?.redirect) {
+            router.push(state.redirect);
+        }
+    }, [state, router]);
     return (
         <div className="flex min-h-screen items-center justify-center p-4">
             <div className="glass-card w-full max-w-md p-8 animate-fade-in">

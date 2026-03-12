@@ -39,6 +39,7 @@ create table if not exists clients (
   id         uuid primary key default uuid_generate_v4(),
   user_id    uuid not null references profiles (id) on delete cascade,
   name       text not null,
+  is_shared  boolean default false not null,
   created_at timestamptz default now() not null
 );
 
@@ -49,7 +50,7 @@ create table if not exists documents (
   user_id     uuid not null references profiles (id) on delete cascade,
   file_name   text not null,
   file_path   text not null,
-  file_type   text not null check (file_type in ('pdf', 'docx', 'image')),
+  file_type   text not null check (file_type in ('pdf', 'docx', 'image', 'txt', 'csv')),
   status      text not null default 'uploading'
                 check (status in ('uploading', 'analysing', 'ready', 'error')),
   share_token uuid not null default uuid_generate_v4() unique,

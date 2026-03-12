@@ -20,6 +20,21 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Missing client name or file' }, { status: 400 });
         }
 
+        // Server-side type validation (belt-and-suspenders after client check)
+        const allowedTypes = [
+            'application/pdf',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'image/jpeg', 'image/png', 'image/webp',
+            'text/plain', 'text/csv', 'application/csv',
+            // Empty string: some OS/browser combos for .txt
+            '',
+        ];
+        if (!allowedTypes.includes(file.type)) {
+            return NextResponse.json({ error: `Unsupported file type: "${file.type}"` }, { status: 400 });
+        }
+
+        console.log(`[upload] file="${file.name}" type="${file.type}" size=${file.size}`);
+
         // 1. Get or Create Client
         let clientId: string;
         const { data: existingClient, error: clientErr } = await supabase

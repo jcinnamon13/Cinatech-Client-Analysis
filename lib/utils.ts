@@ -30,10 +30,12 @@ export function formatRelativeDate(dateString: string): string {
     return formatDate(dateString);
 }
 
-export function getFileType(fileName: string): 'pdf' | 'docx' | 'image' {
+export function getFileType(fileName: string): 'pdf' | 'docx' | 'image' | 'txt' | 'csv' {
     const ext = fileName.split('.').pop()?.toLowerCase();
     if (ext === 'pdf') return 'pdf';
     if (ext === 'docx' || ext === 'doc') return 'docx';
+    if (ext === 'txt') return 'txt';
+    if (ext === 'csv') return 'csv';
     return 'image';
 }
 
