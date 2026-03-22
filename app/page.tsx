@@ -180,12 +180,14 @@ export default function LandingPage() {
                 <p className="landing-pricing-label">Per Report</p>
                 <p className="landing-pricing-price">£197</p>
                 <p className="landing-pricing-desc">Order a single analysis for any client onboarding.</p>
+                <a href="https://buy.stripe.com/fZuaEYbbc8TdgJp3aU33W03" className="landing-btn-primary" target="_blank" rel="noopener noreferrer" style={{ marginTop: '32px' }}>Buy Now</a>
               </div>
               
               <div className="landing-pricing-card-hero">
                 <p className="landing-pricing-label">Most Popular - Monthly</p>
                 <p className="landing-pricing-price">£397<span className="landing-pricing-period">/mo</span></p>
                 <p className="landing-pricing-desc">Unlimited reports for your whole agency.</p>
+                <a href="https://buy.stripe.com/fZucN62EG9Xhal1h1K33W04" className="landing-btn-primary" target="_blank" rel="noopener noreferrer" style={{ marginTop: '48px' }}>Buy Now</a>
               </div>
 
               <div className="landing-pricing-note">
