@@ -640,7 +640,7 @@ body:has(.landing-nav) button {
 
 .landing-hero-sub-wrapper {
   grid-column: 3 / 5;
-  margin-top: -80px;
+  margin-top: 40px;
   background: rgba(15, 17, 20, 0.6);
   backdrop-filter: blur(12px);
   padding: 40px;
