@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
-
 const DEMO_URL =
   'https://cal.com/joe-cinnamon-avdsnj/cinatech-30-min-agency-strategy-call';
 
@@ -43,7 +42,6 @@ const reportItems = [
     body: 'Context drawn from the client\'s exact industry, not generic advice.',
   },
 ];
-
 
 export default function LandingPage() {
   const [selectedImage, setSelectedImage] = useState<typeof previewImages[0] | null>(null);
@@ -126,13 +124,10 @@ export default function LandingPage() {
               {previewImages.map((img, idx) => (
                 <button 
                   key={idx} 
-                  className="landing-screenshot-card landing-screenshot-btn"
+                  className="landing-screenshot-card"
                   onClick={() => setSelectedImage(img)}
                   aria-label={`View full screen: ${img.alt}`}
                 >
-                  <div className="landing-screenshot-hover">
-                    <span className="landing-screenshot-zoom">Click to expand</span>
-                  </div>
                   <Image
                     src={img.src}
                     alt={img.alt}
@@ -152,13 +147,12 @@ export default function LandingPage() {
         </section>
 
         {/* ── WHAT'S INCLUDED ───────────────────────────────────────────── */}
-        <section className="landing-section landing-section-alt">
+        <section className="landing-section">
           <div className="landing-container">
             <h2 className="landing-h2">What every report includes.</h2>
             <div className="landing-features-grid">
               {reportItems.map((item) => (
                 <div key={item.title} className="landing-feature-item">
-                  <span className="landing-accent-dot" aria-hidden="true" />
                   <div>
                     <p className="landing-feature-title">{item.title}</p>
                     <p className="landing-feature-body">{item.body}</p>
@@ -179,8 +173,8 @@ export default function LandingPage() {
                 <p className="landing-pricing-price">£197</p>
                 <p className="landing-pricing-desc">Order a single analysis for any client onboarding.</p>
               </div>
-              <div className="landing-pricing-card">
-                <p className="landing-pricing-label">Monthly</p>
+              <div className="landing-pricing-card is-hero">
+                <p className="landing-pricing-label">Most Popular - Monthly</p>
                 <p className="landing-pricing-price">£397<span className="landing-pricing-period">/mo</span></p>
                 <p className="landing-pricing-desc">Unlimited reports for your whole agency.</p>
               </div>
@@ -192,7 +186,7 @@ export default function LandingPage() {
         </section>
 
         {/* ── FINAL CTA ─────────────────────────────────────────────────── */}
-        <section className="landing-section landing-section-alt landing-cta-section">
+        <section className="landing-section">
           <div className="landing-container landing-cta-inner">
             <h2 className="landing-h2">Want to see it on one of your real clients?</h2>
             <p className="landing-cta-sub">
@@ -209,12 +203,12 @@ export default function LandingPage() {
       {/* ── FOOTER ────────────────────────────────────────────────────── */}
       <footer className="landing-footer">
         <div className="landing-container landing-footer-inner">
-          <div className="landing-logo-small">CinaTech</div>
+          <div className="landing-footer-left">CinaTech</div>
           <div className="landing-footer-links">
             <a href="/terms" className="landing-footer-link">Terms of Service</a>
             <a href="/privacy" className="landing-footer-link">Privacy Policy</a>
           </div>
-          <p className="landing-footer-copy">© 2026 CinaTech. All rights reserved.</p>
+          <p className="landing-footer-copy" style={{ color: 'var(--lp-text-secondary)', fontSize: '13px', marginTop: '24px', textAlign: 'center' }}>© 2026 CinaTech. All rights reserved.</p>
         </div>
       </footer>
     </>
