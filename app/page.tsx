@@ -53,7 +53,7 @@ export default function LandingPage() {
 
   return (
     <>
-      {/* ── IMAGE MODAL ───────────────────────────────────────────────── */}
+      {/* ── IMAGE MODAL TAKE-OVER ─────────────────────────────────────── */}
       {selectedImage && (
         <div 
           className="landing-modal-overlay" 
@@ -75,10 +75,11 @@ export default function LandingPage() {
               <Image
                 src={selectedImage.src}
                 alt={selectedImage.alt}
-                width={1200}
-                height={900}
+                width={1400}
+                height={1000}
                 style={{ width: '100%', height: 'auto', display: 'block' }}
                 quality={100}
+                priority
               />
             </div>
             <div className="landing-modal-description">
@@ -99,101 +100,111 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* ── HERO ──────────────────────────────────────────────────────── */}
+        {/* ── HERO (Asymmetric) ─────────────────────────────────────────── */}
         <section className="landing-section landing-hero">
-          <div className="landing-container landing-hero-inner">
-            <h1 className="landing-h1">
-              AI-powered strategic analysis for marketing agencies.
-            </h1>
-            <p className="landing-hero-sub">
-              CinaTech analyses your client&apos;s onboarding form and produces a full
-              strategic report: competitive gaps, compliance risks, and a ranked
-              action plan in minutes.
-            </p>
-            <a href={DEMO_URL} className="landing-btn-primary landing-btn-lg" target="_blank" rel="noopener noreferrer">
-              Book a free demo call
-            </a>
+          <div className="landing-hero-bg"></div>
+          <div className="landing-container">
+            <div className="landing-hero-grid">
+              <div className="landing-hero-title-wrapper">
+                <h1 className="landing-h1">
+                  AI-powered strategic analysis for marketing agencies.
+                </h1>
+              </div>
+              <div className="landing-hero-sub-wrapper">
+                <p className="landing-body" style={{ color: 'var(--lp-text-primary)' }}>
+                  CinaTech analyses your client&apos;s onboarding form and produces a full
+                  strategic report: competitive gaps, compliance risks, and a ranked
+                  action plan in minutes.
+                </p>
+                <a href={DEMO_URL} className="landing-btn-primary" target="_blank" rel="noopener noreferrer">
+                  Book a free demo call
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ── REPORT PREVIEW ────────────────────────────────────────────── */}
-        <section className="landing-section">
+        {/* ── REPORT PREVIEW (Masonry) ──────────────────────────────────── */}
+        <section className="landing-section landing-preview-section">
           <div className="landing-container">
             <h2 className="landing-h2">See exactly what it produces.</h2>
-            <div className="landing-screenshots">
+            <div className="landing-masonry">
               {previewImages.map((img, idx) => (
                 <button 
                   key={idx} 
-                  className="landing-screenshot-card"
+                  className={`landing-masonry-item landing-item-${idx}`}
                   onClick={() => setSelectedImage(img)}
                   aria-label={`View full screen: ${img.alt}`}
                 >
                   <Image
                     src={img.src}
                     alt={img.alt}
-                    width={800}
-                    height={600}
+                    width={1000}
+                    height={750}
                     style={{ width: '100%', height: 'auto', display: 'block' }}
                   />
                 </button>
               ))}
+              <div className="landing-disclaimer">
+                * Note: The images above are excerpts, not a full report, and specific client information has been redacted. 
+                One free live demo is available per agency. To request a full length, redacted case study example, 
+                please contact <a href="mailto:joseph@cinatech.ai">joseph@cinatech.ai</a>.
+              </div>
             </div>
-            <p className="landing-disclaimer">
-              * Note: The images above are excerpts, not a full report, and specific client information has been redacted. 
-              One free live demo is available per agency. To request a full length, redacted case study example, 
-              please contact <a href="mailto:joseph@cinatech.ai">joseph@cinatech.ai</a>.
-            </p>
           </div>
         </section>
 
-        {/* ── WHAT'S INCLUDED ───────────────────────────────────────────── */}
-        <section className="landing-section">
+        {/* ── WHAT'S INCLUDED (Brutalist Rows) ──────────────────────────── */}
+        <section className="landing-section landing-features-section">
           <div className="landing-container">
             <h2 className="landing-h2">What every report includes.</h2>
-            <div className="landing-features-grid">
-              {reportItems.map((item) => (
-                <div key={item.title} className="landing-feature-item">
-                  <div>
-                    <p className="landing-feature-title">{item.title}</p>
-                    <p className="landing-feature-body">{item.body}</p>
-                  </div>
+            <div className="landing-features-list">
+              {reportItems.map((item, index) => (
+                <div key={item.title} className="landing-feature-row">
+                  <div className="landing-feature-number">0{index + 1}</div>
+                  <h3 className="landing-feature-title">{item.title}</h3>
+                  <p className="landing-feature-body">{item.body}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── PRICING ───────────────────────────────────────────────────── */}
-        <section className="landing-section">
+        {/* ── PRICING (Grid Breaking) ───────────────────────────────────── */}
+        <section className="landing-section landing-pricing-section">
           <div className="landing-container">
-            <h2 className="landing-h2">Simple pricing.</h2>
+            <h2 className="landing-h2" style={{ marginBottom: 0 }}>Simple pricing.</h2>
             <div className="landing-pricing-grid">
-              <div className="landing-pricing-card">
+              
+              <div className="landing-pricing-card-small">
                 <p className="landing-pricing-label">Per Report</p>
                 <p className="landing-pricing-price">£197</p>
                 <p className="landing-pricing-desc">Order a single analysis for any client onboarding.</p>
               </div>
-              <div className="landing-pricing-card is-hero">
+              
+              <div className="landing-pricing-card-hero">
                 <p className="landing-pricing-label">Most Popular - Monthly</p>
                 <p className="landing-pricing-price">£397<span className="landing-pricing-period">/mo</span></p>
                 <p className="landing-pricing-desc">Unlimited reports for your whole agency.</p>
               </div>
+
+              <div className="landing-pricing-note">
+                First agencies through the door receive founding pricing. Book a call to find out more.
+              </div>
+
             </div>
-            <p className="landing-pricing-note">
-              First agencies through the door receive founding pricing. Book a call to find out more.
-            </p>
           </div>
         </section>
 
         {/* ── FINAL CTA ─────────────────────────────────────────────────── */}
-        <section className="landing-section">
-          <div className="landing-container landing-cta-inner">
+        <section className="landing-section landing-cta-section">
+          <div className="landing-container">
             <h2 className="landing-h2">Want to see it on one of your real clients?</h2>
-            <p className="landing-cta-sub">
+            <p className="landing-body" style={{ margin: '0 auto 48px', maxWidth: '600px' }}>
               Book a 30-minute call. I&apos;ll walk you through a live report generated
               from your actual client data. No pitch, no pressure.
             </p>
-            <a href={DEMO_URL} className="landing-btn-primary landing-btn-lg" target="_blank" rel="noopener noreferrer">
+            <a href={DEMO_URL} className="landing-btn-primary" target="_blank" rel="noopener noreferrer" style={{ padding: '20px 40px', fontSize: '15px' }}>
               Book a free demo call
             </a>
           </div>
@@ -202,13 +213,17 @@ export default function LandingPage() {
 
       {/* ── FOOTER ────────────────────────────────────────────────────── */}
       <footer className="landing-footer">
-        <div className="landing-container landing-footer-inner">
-          <div className="landing-footer-left">CinaTech</div>
-          <div className="landing-footer-links">
-            <a href="/terms" className="landing-footer-link">Terms of Service</a>
-            <a href="/privacy" className="landing-footer-link">Privacy Policy</a>
+        <div className="landing-container">
+          <div className="landing-footer-grid">
+            <div className="landing-footer-left">CinaTech</div>
+            <div className="landing-footer-links">
+              <a href="/terms" className="landing-footer-link">Terms of Service</a>
+              <a href="/privacy" className="landing-footer-link">Privacy Policy</a>
+            </div>
+            <div className="landing-footer-copy">
+              © 2026 CinaTech. All rights reserved.
+            </div>
           </div>
-          <p className="landing-footer-copy" style={{ color: 'var(--lp-text-secondary)', fontSize: '13px', marginTop: '24px', textAlign: 'center' }}>© 2026 CinaTech. All rights reserved.</p>
         </div>
       </footer>
     </>
