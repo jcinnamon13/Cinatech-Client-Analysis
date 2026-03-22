@@ -210,7 +210,11 @@ export default function LandingPage() {
       <footer className="landing-footer">
         <div className="landing-container landing-footer-inner">
           <div className="landing-logo-small">CinaTech</div>
-          <p className="landing-footer-copy">© 2025 CinaTech. All rights reserved.</p>
+          <div className="landing-footer-links">
+            <a href="/terms" className="landing-footer-link">Terms of Service</a>
+            <a href="/privacy" className="landing-footer-link">Privacy Policy</a>
+          </div>
+          <p className="landing-footer-copy">© 2026 CinaTech. All rights reserved.</p>
         </div>
       </footer>
     </>

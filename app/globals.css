@@ -860,7 +860,28 @@ body:has(.landing-nav) {
 .landing-footer-inner {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 24px;
+  flex-wrap: wrap;
+}
+
+.landing-footer-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.landing-footer-link {
+  font-size: 14px;
+  color: var(--lp-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.landing-footer-link:hover {
+  color: white;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .landing-footer-copy {
