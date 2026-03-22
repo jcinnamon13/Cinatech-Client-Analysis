@@ -5,12 +5,9 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: {
-    default: 'CinaTech Client Analysis',
-    template: '%s | CinaTech',
-  },
+  title: 'CinaTech: AI-Powered Strategic Analysis for Marketing Agencies',
   description:
-    'AI-powered client onboarding document analysis for agencies. Upload client documents and receive expert business recommendations instantly.',
+    'CinaTech analyses your client\'s onboarding form and produces a full strategic report: competitive gaps, compliance risks, and a ranked action plan in minutes.',
   keywords: ['client analysis', 'onboarding', 'AI', 'business consulting', 'agency'],
 };
 

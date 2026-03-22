@@ -105,12 +105,12 @@ export async function POST(request: NextRequest) {
 
         // Fire off the AI analysis asynchronously. We don't await this because 
         // Vercel serverless functions have a 10s default timeout limit, but Claude 
-        // might take 30-40 seconds for a large document. The analyse route is set 
-        // to a max duration of 60s and will update the DB status when done.
-        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-        fetch(`${appUrl}/api/documents/${document.id}/analyse`, {
-            method: 'POST',
-        }).catch(e => console.error('Failed to trigger async analysis:', e));
+        // might take 3-4 minutes for a large document. We use a dynamic import 
+        // stringing a decoupled native promise execution to evade Next.js's 300s 
+        // internal HTTP fetch socket timeout bug.
+        import('@/lib/ai/process').then(({ processAnalysis }) => {
+            processAnalysis(document.id).catch(e => console.error('Failed async analysis natively:', e));
+        });
 
         return NextResponse.json({
             success: true,

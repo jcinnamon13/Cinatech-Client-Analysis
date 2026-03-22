@@ -153,7 +153,7 @@ export default function DocumentUpload() {
 
             <div
                 className={cn(
-                    "glass-card p-12 border-2 border-dashed flex flex-col items-center justify-center text-center transition-all cursor-pointer",
+                    "relative glass-card p-12 border-2 border-dashed flex flex-col items-center justify-center text-center transition-all cursor-pointer",
                     isDragActive ? "border-blue-500 bg-blue-500/5 scale-[1.02]" : "border-[var(--border)] hover:border-[var(--border-hover)]"
                 )}
                 onDragEnter={handleDragEnter}
@@ -165,7 +165,7 @@ export default function DocumentUpload() {
                 <input
                     type="file"
                     multiple
-                    className="hidden"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50"
                     ref={fileInputRef}
                     onChange={handleFileInput}
                     accept=".pdf,.docx,.doc,.txt,.csv,image/jpeg,image/png,image/webp"

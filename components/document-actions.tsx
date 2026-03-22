@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Download, Share2, Check, Copy, Mail, X, Loader2 } from 'lucide-react';
 
 interface AnalysisBlock {
@@ -34,6 +35,9 @@ export function DocumentActions({
     const [copied, setCopied] = useState<'link' | 'rich' | null>(null);
     const [emailInput, setEmailInput] = useState('');
     const [emailStatus, setEmailStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => { setMounted(true); }, []);
 
     // --- PDF Export ---
     const handlePrintExport = () => {
@@ -138,14 +142,14 @@ export function DocumentActions({
                 </div>
             </div>
 
-            {/* Share Modal */}
-            {showShareModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Share Modal — rendered via portal to escape stacking context */}
+            {showShareModal && mounted && createPortal(
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
                     <div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
                         onClick={() => setShowShareModal(false)}
                     />
-                    <div className="relative w-full max-w-md bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="relative w-full max-w-md bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl p-6 space-y-5">
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-semibold text-white">Share Report</h3>
                             <button
@@ -161,7 +165,7 @@ export function DocumentActions({
                             <label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Share Link</label>
                             <div className="flex items-center space-x-2">
                                 <div className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-zinc-300 truncate font-mono">
-                                    {`${typeof window !== 'undefined' ? window.location.origin : ''}/shared/${shareToken || documentId}`}
+                                    {`${window.location.origin}/shared/${shareToken || documentId}`}
                                 </div>
                                 <button
                                     onClick={handleCopyLink}
@@ -211,7 +215,8 @@ export function DocumentActions({
                             )}
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </>
     );

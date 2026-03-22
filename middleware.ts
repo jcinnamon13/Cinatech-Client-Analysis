@@ -28,8 +28,8 @@ export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Public routes — no auth required
-    const publicRoutes = ['/login', '/register', '/share', '/shared'];
-    const isPublic = publicRoutes.some((r) => pathname.startsWith(r));
+    const publicRoutes = ['/login', '/register', '/share', '/shared', '/'];
+    const isPublic = publicRoutes.some((r) => pathname === r || (r !== '/' && pathname.startsWith(r)));
 
     // API routes — handle auth server-side
     if (pathname.startsWith('/api')) {
@@ -61,7 +61,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Redirect logged-in users away from auth pages
-    if (user && (pathname === '/login' || pathname === '/register' || pathname === '/')) {
+    if (user && (pathname === '/login' || pathname === '/register')) {
         const redirectUrl = request.nextUrl.clone();
         redirectUrl.pathname = '/dashboard';
         return NextResponse.redirect(redirectUrl);

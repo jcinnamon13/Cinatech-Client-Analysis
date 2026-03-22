@@ -8,7 +8,10 @@ import {
     CheckCircle2,
     Sparkles,
     MessageSquare,
-    Loader2
+    Loader2,
+    User,
+    Clock,
+    Target
 } from 'lucide-react';
 import Link from 'next/link';
 import { DocumentActions } from '@/components/document-actions';
@@ -47,6 +50,7 @@ export default async function DocumentPage({
                 id,
                 summary,
                 structured_result,
+                metadata,
                 created_at,
                 version
             )
@@ -62,10 +66,28 @@ export default async function DocumentPage({
 
     const clientName = document.clients?.name || 'Unknown Client';
     const allAnalyses = document.analyses || [];
-    const analysis = allAnalyses[0]; // Most recent version (descending order)
+    const analysis = allAnalyses[0];
 
-    // Parse the structured JSON result
-    const results: AnalysisBlock[] = analysis?.structured_result as unknown as AnalysisBlock[] || [];
+    // Parse the structured JSON result (handles both legacy array and new object format)
+    let results: AnalysisBlock[] = [];
+    let priorityPlan: any[] | null = null;
+
+    if (analysis?.structured_result) {
+        if (Array.isArray(analysis.structured_result)) {
+            results = analysis.structured_result as unknown as AnalysisBlock[];
+        } else if (typeof analysis.structured_result === 'object') {
+            const parsedObj = analysis.structured_result as any;
+            results = parsedObj.pillars || [];
+            priorityPlan = parsedObj.priority_action_plan || null;
+        }
+    }
+
+    // Derive display fields from AI-extracted metadata, falling back to client name
+    type Metadata = { company_name?: string | null; individual_name?: string | null; job_title?: string | null };
+    const meta = (analysis?.metadata as Metadata) ?? {};
+    const displayName = meta.company_name || clientName;
+    const individualName = meta.individual_name || null;
+    const jobTitle = meta.job_title || null;
 
     const isPending = document.status === 'uploading' || document.status === 'analysing';
     const isError = document.status === 'error';
@@ -84,9 +106,19 @@ export default async function DocumentPage({
                         <FileText className="w-6 h-6 text-indigo-400" />
                     </div>
                     <div>
-                        <h1 className="text-2xl font-semibold text-white tracking-tight">{document.file_name}</h1>
+                        <h1 className="text-2xl font-semibold text-white tracking-tight">{displayName}</h1>
                         <div className="flex flex-wrap items-center gap-3 text-sm mt-1">
-                            <span className="text-zinc-400">{clientName}</span>
+                            {individualName && (
+                                <span className="text-zinc-300 font-medium">{individualName}</span>
+                            )}
+                            {jobTitle && (
+                                <>
+                                    {individualName && <span className="text-zinc-600">•</span>}
+                                    <span className="text-zinc-400">{jobTitle}</span>
+                                </>
+                            )}
+                            {(individualName || jobTitle) && <span className="text-zinc-600">•</span>}
+                            <span className="text-zinc-500 text-xs">{document.file_name}</span>
                             <span className="text-zinc-600">•</span>
                             <span className="text-zinc-400">Uploaded {formatDate(document.created_at)}</span>
                             <span className="text-zinc-600">•</span>
@@ -237,6 +269,103 @@ export default async function DocumentPage({
                             </div>
                         ))}
                     </div>
+
+                    {/* Priority Action Plan */}
+                    {priorityPlan && priorityPlan.length > 0 && (
+                        <div className="p-8 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 backdrop-blur-sm rounded-2xl border border-emerald-500/20 shadow-xl relative overflow-hidden mt-8">
+                            <div className="absolute top-0 right-0 -mt-8 -mr-8 w-40 h-40 bg-emerald-500/10 blur-3xl rounded-full" />
+                            <div className="flex items-start space-x-3 mb-6 relative">
+                                <CheckCircle2 className="w-6 h-6 text-emerald-400 mt-0.5" />
+                                <div>
+                                    <h2 className="text-xl font-semibold text-white tracking-tight">Priority Action Plan</h2>
+                                    <p className="text-sm text-zinc-400 mt-1">
+                                        The following actions represent the highest-leverage starting points and should form the agenda for the first working session.
+                                    </p>
+                                </div>
+                            </div>
+                            <ul className="space-y-3 relative z-10 pl-0">
+                                {priorityPlan.map((action, idx) => {
+                                    if (typeof action === 'string') {
+                                        const cleanText = action.replace(/^\d+\.\s*/, '');
+                                        const parts = cleanText.split(/—|-/).map(p => p.trim());
+
+                                        return (
+                                            <li key={idx} className="p-4 bg-black/20 rounded-xl border border-white/5 flex flex-col md:flex-row md:items-center gap-4">
+                                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                                                    {idx + 1}
+                                                </div>
+                                                <div className="flex-1 w-full text-zinc-300 text-[15px] leading-snug">
+                                                    {parts.length >= 3 ? (
+                                                        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-x-2 gap-y-2">
+                                                            <span className="font-medium text-emerald-100">{parts[0]}</span>
+                                                            <span className="text-zinc-600 hidden sm:inline mt-1">•</span>
+                                                            <div className="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-500/10 rounded-md border border-indigo-500/20">
+                                                                <Clock className="w-3 h-3 text-indigo-400/70" />
+                                                                <span className="text-indigo-400/70 text-[10px] uppercase tracking-wider font-bold">Deadline</span>
+                                                                <div className="w-px h-3 bg-indigo-500/20 mx-0.5"></div>
+                                                                <span className="text-indigo-300/90 text-xs font-medium">{parts[2]}</span>
+                                                            </div>
+                                                            {parts[3] && (
+                                                                <>
+                                                                    <span className="text-zinc-600 hidden sm:inline mt-1">•</span>
+                                                                    <div className="flex items-center gap-1.5 px-2 py-0.5 bg-white/5 rounded-md border border-white/10">
+                                                                        <Target className="w-3 h-3 text-zinc-500" />
+                                                                        <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold">Pillar</span>
+                                                                        <div className="w-px h-3 bg-white/10 mx-0.5"></div>
+                                                                        <span className="text-zinc-400 text-xs font-medium">{parts[3]}</span>
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <span>{cleanText}</span>
+                                                    )}
+                                                </div>
+                                            </li>
+                                        );
+                                    }
+
+                                    const obj = action as any;
+                                    return (
+                                        <li key={idx} className="p-5 bg-black/20 rounded-xl border border-white/5 flex flex-col gap-3">
+                                            <div className="flex items-start gap-4">
+                                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm mt-0.5">
+                                                    {idx + 1}
+                                                </div>
+                                                <div className="flex-1 space-y-2 w-full">
+                                                    <div className="flex flex-col md:flex-row md:items-center md:gap-x-3 gap-y-1 w-full">
+                                                        <span className="font-semibold text-emerald-100/90 text-[16px]">{obj.action}</span>
+                                                    </div>
+                                                    <div className="flex flex-wrap items-center gap-2 mt-1">
+                                                        <div className="flex items-center gap-1.5 px-2 py-0.5 bg-indigo-500/10 rounded-md border border-indigo-500/20">
+                                                            <Clock className="w-3 h-3 text-indigo-400/70" />
+                                                            <span className="text-indigo-400/70 text-[10px] uppercase tracking-wider font-bold">Deadline</span>
+                                                            <div className="w-px h-3 bg-indigo-500/20 mx-0.5"></div>
+                                                            <span className="text-indigo-300/90 text-xs font-medium">{obj.deadline}</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1.5 px-2 py-0.5 bg-white/5 rounded-md border border-white/10">
+                                                            <Target className="w-3 h-3 text-zinc-500" />
+                                                            <span className="text-zinc-500 text-[10px] uppercase tracking-wider font-bold">Pillar</span>
+                                                            <div className="w-px h-3 bg-white/10 mx-0.5"></div>
+                                                            <span className="text-zinc-400 text-xs font-medium">{obj.pillar}</span>
+                                                        </div>
+                                                    </div>
+                                                    {obj.consequence && (
+                                                        <div className="pt-2 mt-2 border-t border-white/5">
+                                                            <div className="flex items-start space-x-2 text-rose-300/90 text-[14px] leading-relaxed">
+                                                                <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                                                                <span className="whitespace-pre-wrap">{obj.consequence}</span>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    )}
 
                     {/* Version History — Phase 10 */}
                     {allAnalyses.length > 0 && (
