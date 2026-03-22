@@ -639,6 +639,26 @@ body:has(.landing-nav) {
   transform: translateY(0);
 }
 
+.landing-disclaimer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 14px;
+  color: #8a8a98;
+  line-height: 1.5;
+}
+
+.landing-disclaimer a {
+  color: var(--lp-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.landing-disclaimer a:hover {
+  color: white;
+}
+
 /* ── Image Modal ── */
 .landing-modal-overlay {
   position: fixed;

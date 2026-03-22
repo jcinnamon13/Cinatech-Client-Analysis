@@ -143,6 +143,11 @@ export default function LandingPage() {
                 </button>
               ))}
             </div>
+            <p className="landing-disclaimer">
+              * Note: The images above are excerpts, not a full report, and specific client information has been redacted. 
+              One free live demo is available per agency. To request a complete, unredacted case study example, 
+              please contact <a href="mailto:joseph@cinatech.ai">joseph@cinatech.ai</a>.
+            </p>
           </div>
         </section>
 
