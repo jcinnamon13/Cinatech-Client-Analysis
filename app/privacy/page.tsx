@@ -120,20 +120,25 @@ export default function PrivacyPage() {
               <td>USA — UK IDTA / EU SCCs + DPA in place</td>
             </tr>
             <tr>
-              <td>Supabase</td>
-              <td>Database storage</td>
-              <td>USA — UK IDTA / EU SCCs + DPA in place</td>
-            </tr>
-            <tr>
-              <td>Resend</td>
-              <td>Transactional email delivery</td>
-              <td>USA — UK IDTA / EU SCCs + DPA in place</td>
-            </tr>
-            <tr>
-              <td>Stripe</td>
-              <td>Payment processing</td>
-              <td>USA — UK IDTA / EU SCCs + DPA in place</td>
-            </tr>
+               <td>Supabase</td>
+               <td>Database storage</td>
+               <td>USA — UK IDTA / EU SCCs + DPA in place</td>
+             </tr>
+             <tr>
+               <td>Resend</td>
+               <td>Transactional email delivery</td>
+               <td>USA — UK IDTA / EU SCCs + DPA in place</td>
+             </tr>
+             <tr>
+               <td>Cal.com</td>
+               <td>Meeting scheduling and confirmation emails</td>
+               <td>UK / EU / USA — UK IDTA / EU SCCs + DPA in place</td>
+             </tr>
+             <tr>
+               <td>Stripe</td>
+               <td>Payment processing</td>
+               <td>USA — UK IDTA / EU SCCs + DPA in place</td>
+             </tr>
           </tbody>
         </table>
 
