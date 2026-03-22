@@ -23,13 +23,19 @@ export default function TermsPage() {
         <h2>6. Limitation of Liability</h2>
         <p>CinaTech provides strategic analysis based on provided inputs and AI interpretation. The reports are advisory in nature. We shall not be held liable for any direct, indirect, incidental, or consequential damages resulting from business decisions made based on our reports.</p>
         
-        <h2>7. Governing Law</h2>
-        <p>These terms shall be governed and construed in accordance with the laws of England and Wales, without regard to its conflict of law provisions.</p>
+        <h2>7. Governing Law and International Use</h2>
+        <p>These terms shall be governed and construed in accordance with the laws of England and Wales, without regard to its conflict of law provisions. If you access the service from outside the United Kingdom, you are responsible for compliance with all local laws and regulations governing data usage and software access in your jurisdiction.</p>
         
-        <h2>8. Changes to Terms</h2>
+        <h2>8. Indemnification</h2>
+        <p>You agree to defend, indemnify, and hold harmless CinaTech, its affiliates, and their respective directors, officers, employees, and agents from and against any claims, actions, or demands, including reasonable legal and accounting fees, alleged to result from your use of the service or your breach of these Terms of Service.</p>
+        
+        <h2>9. Severability</h2>
+        <p>If any provision of these Terms is found to be unenforceable or invalid under any applicable law, such unenforceability or invalidity shall not render these Terms unenforceable or invalid as a whole, and such provisions shall be deleted without affecting the remaining provisions herein.</p>
+
+        <h2>10. Changes to Terms</h2>
         <p>We reserve the right to modify or replace these terms at any time. We will provide notice of any material changes by posting the new terms on this site.</p>
         
-        <h2>9. Contact Us</h2>
+        <h2>11. Contact Us</h2>
         <p>If you have any questions about these Terms, please contact us at joseph@cinatech.ai.</p>
       </div>
     </div>
