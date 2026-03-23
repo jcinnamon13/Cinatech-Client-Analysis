@@ -1,0 +1,9 @@
+Client Name: Acme Corp
+Industry: B2B SaaS
+Target Audience: Enterprise Marketing Teams
+Current Challenges: Struggling with brand differentiation in a crowded market. High customer acquisition cost (CAC). Poor organic search visibility.
+Main Competitors: TechFlow, MarketLeader Pro, DataSync.
+Marketing Budget: £50,000/month
+Goals: Increase enterprise pipeline by 30% in Q3. Establish thought leadership in the UK market. Reduce CAC by 15%.
+Messaging Framework: "Acme Corp is the only unified marketing data platform built specifically for enterprise scale."
+Legal Constraints: Must adhere to GDPR strictly. Cannot make ROI promises without asterisked disclaimers. Avoid using the word "guarantee".

@@ -539,9 +539,12 @@ body:has(.landing-nav) button {
   top: 0;
   width: 100%;
   z-index: 100;
-  mix-blend-mode: difference;
-  padding: 32px 40px;
-  pointer-events: none;
+  background: rgba(15, 17, 20, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 24px 40px;
+  border-bottom: 1px solid var(--lp-border);
+  transition: all 0.3s ease;
 }
 
 .landing-nav-inner {
@@ -555,13 +558,21 @@ body:has(.landing-nav) button {
 .landing-logo {
   font-family: var(--font-serif), serif;
   font-size: 32px;
-  color: #fff;
+  color: var(--lp-text-primary);
   font-weight: 400;
 }
 
-.landing-nav .landing-btn-primary {
-  pointer-events: auto;
-  mix-blend-mode: normal;
+@media (max-width: 768px) {
+  .landing-nav {
+    padding: 16px 24px;
+  }
+  .landing-logo {
+    font-size: 24px;
+  }
+  .landing-nav .landing-btn-primary {
+    padding: 12px 16px;
+    font-size: 11px;
+  }
 }
 
 .landing-btn-primary {
