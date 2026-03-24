@@ -14,6 +14,7 @@ export default function FreeAnalysis() {
   });
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showNotice, setShowNotice] = useState(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +103,7 @@ export default function FreeAnalysis() {
 
           <div style={{ transition: 'all 0.5s ease', opacity: isUnlocked ? 1 : 0.1, pointerEvents: isUnlocked ? 'auto' : 'none', filter: isUnlocked ? 'none' : 'blur(4px)' }}>
             <p className="landing-body" style={{ maxWidth: '800px', marginBottom: '60px', fontSize: '20px', color: 'var(--lp-accent)' }}>
-              Verification complete. <strong style={{ color: 'var(--lp-text-primary)' }}>If you already have your own onboarding document or discovery notes, you can skip straight to Step 3.</strong>
+              Verification complete. Protocols unlocked.
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px' }}>
@@ -153,6 +154,19 @@ export default function FreeAnalysis() {
           </div>
         </div>
       </footer>
+
+      {showNotice && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, background: 'rgba(10, 10, 12, 0.85)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div style={{ background: '#0a0a0c', border: '1px solid var(--lp-accent)', padding: '50px', maxWidth: '600px', textAlign: 'center', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--lp-accent)', marginBottom: '20px', letterSpacing: '0.1em' }}>IMPORTANT NOTICE</div>
+            <h3 className="landing-h2" style={{ fontSize: '28px', marginBottom: '24px' }}>Using Your Own Setup</h3>
+            <p className="landing-body" style={{ fontSize: '18px', marginBottom: '40px', color: 'var(--lp-text-primary)' }}>
+              If you already have your own onboarding document, discovery call notes, or client brief, you can skip straight to Step 3. There is no need to manually re-enter data into our templates.
+            </p>
+            <button onClick={() => setShowNotice(false)} className="landing-btn-primary" style={{ width: '100%', fontFamily: 'var(--font-mono)' }}>I UNDERSTAND</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
