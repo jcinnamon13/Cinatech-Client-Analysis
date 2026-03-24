@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // Public routes — no auth required (Note: using dash here is internal to middleware comment)
-    const publicRoutes = ['/login', '/register', '/share', '/shared', '/', '/terms', '/privacy'];
+    const publicRoutes = ['/login', '/register', '/share', '/shared', '/', '/terms', '/privacy', '/free-analysis'];
     const isPublic = publicRoutes.some((r) => pathname === r || (r !== '/' && pathname.startsWith(r)));
 
     // API routes — handle auth server-side

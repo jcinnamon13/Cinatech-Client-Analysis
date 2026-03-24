@@ -105,6 +105,14 @@ export default function LandingPage() {
           <div className="landing-hero-bg"></div>
           <div className="landing-container">
             <div className="landing-hero-grid">
+              <div className="landing-hero-sub-wrapper-left">
+                <p className="landing-body" style={{ color: 'var(--lp-text-primary)' }}>
+                  Get a free client analysis report. Test the engine exclusively on one of your active prospects.
+                </p>
+                <a href="/free-analysis" className="landing-btn-primary">
+                  Get Free Report
+                </a>
+              </div>
               <div className="landing-hero-title-wrapper">
                 <h1 className="landing-h1">
                   AI-powered strategic analysis for marketing agencies.
