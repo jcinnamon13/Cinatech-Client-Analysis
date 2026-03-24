@@ -13,10 +13,24 @@ export default function FreeAnalysis() {
     agreedToTerms: false
   });
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.agreedToTerms && formData.fullName && formData.email && formData.summary) {
+      setIsSubmitting(true);
+      
+      try {
+        await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+      } catch (err) {
+        console.error("Failed to append lead to CSV log:", err);
+      }
+
+      setIsSubmitting(false);
       setIsUnlocked(true);
       // Smooth scroll to the steps section to indicate success
       setTimeout(() => {
@@ -79,7 +93,9 @@ export default function FreeAnalysis() {
                     I agree to the <Link href="/terms" style={{ color: 'var(--lp-accent)' }} target="_blank">Terms of Service</Link> and <Link href="/privacy" style={{ color: 'var(--lp-accent)' }} target="_blank">Privacy Policy</Link>. *
                   </label>
                 </div>
-                <button type="submit" className="landing-btn-primary" style={{ marginTop: '16px', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-mono)' }}>UNLOCK PROTOCOLS</button>
+                <button type="submit" disabled={isSubmitting} className="landing-btn-primary" style={{ marginTop: '16px', border: 'none', cursor: isSubmitting ? 'wait' : 'pointer', fontFamily: 'var(--font-mono)', opacity: isSubmitting ? 0.7 : 1 }}>
+                  {isSubmitting ? 'VERIFYING...' : 'UNLOCK PROTOCOLS'}
+                </button>
               </form>
             </div>
           )}
