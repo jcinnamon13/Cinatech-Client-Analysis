@@ -1,23 +1,19 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
     const { fullName, email, phone, website, summary } = data;
 
-    // Resolve the path exactly to the root of the project
-    const csvPath = path.join(process.cwd(), 'client_database_free_report.csv');
-
-    let fileExists = false;
-    try {
-      if (fs.existsSync(csvPath)) {
-        fileExists = true;
-      }
-    } catch(err) {
-      // Ignored
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Supabase environment variables missing');
     }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Safely wrap text in quotes and escape internal quotes to prevent CSV breakage from commas
     const escapeCsv = (str: string | undefined | null) => {
@@ -28,16 +24,36 @@ export async function POST(request: Request) {
     const dateStr = new Date().toISOString();
     const row = `${escapeCsv(dateStr)},${escapeCsv(fullName)},${escapeCsv(email)},${escapeCsv(phone)},${escapeCsv(website)},${escapeCsv(summary)}\n`;
 
-    if (!fileExists) {
-        const header = `"Timestamp","Full Name","Email","Phone","Website","Business Summary"\n`;
-        fs.appendFileSync(csvPath, header);
+    // Ensure Bucket exists
+    const { data: buckets } = await supabase.storage.listBuckets();
+    if (!buckets?.find(b => b.name === 'leads')) {
+      await supabase.storage.createBucket('leads', { public: false });
     }
 
-    fs.appendFileSync(csvPath, row);
+    // Try to download existing file
+    const { data: fileData } = await supabase.storage.from('leads').download('client_database_free_report.csv');
+    
+    let content = `"Timestamp","Full Name","Email","Phone","Website","Business Summary"\n`;
+    if (fileData) {
+      content = await fileData.text();
+    }
 
-    return NextResponse.json({ success: true, message: 'Lead added to CSV database' });
+    content += row;
+
+    // Upload or Upsert the file back to Storage
+    const { error: uploadError } = await supabase.storage.from('leads').upload('client_database_free_report.csv', content, {
+      upsert: true,
+      contentType: 'text/csv'
+    });
+
+    if (uploadError) {
+      console.error('Supabase Upload Error:', uploadError);
+      throw new Error(uploadError.message);
+    }
+
+    return NextResponse.json({ success: true, message: 'Lead perfectly added to remote CSV database' });
   } catch (error) {
-    console.error('Error writing to leads CSV:', error);
+    console.error('Error writing to leads remote CSV:', error);
     return NextResponse.json({ error: 'Failed to record lead snippet.' }, { status: 500 });
   }
 }
