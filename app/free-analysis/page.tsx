@@ -18,31 +18,36 @@ export default function FreeAnalysis() {
           </h1>
           
           <p className="landing-body" style={{ maxWidth: '800px', marginBottom: '80px', fontSize: '24px' }}>
-            Follow these three simple steps to submit an active client prospect and receive your comprehensive strategic breakdown within the hour.
+            Submit an active client prospect and receive your comprehensive strategic breakdown within the hour. <strong style={{ color: 'var(--lp-text-primary)' }}>If you already have your own onboarding document or discovery notes, you can skip straight to Step 3.</strong>
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px' }}>
             {/* Step 1 */}
             <div style={{ padding: '40px', border: '1px solid var(--lp-border)', background: 'rgba(15, 17, 20, 0.6)', backdropFilter: 'blur(12px)' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--lp-accent)', marginBottom: '20px' }}>STEP 01</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--lp-text-secondary)', marginBottom: '20px' }}>OPTIONAL STEP 01</div>
               <h2 className="landing-h2" style={{ fontSize: '32px', marginBottom: '20px' }}>Download Template</h2>
-              <p className="landing-body" style={{ marginBottom: '32px' }}>Download the raw text onboarding template. It contains the exact fields our AI engine requires for accurate analysis.</p>
-              <a href="/CinaTech_Client_Onboarding_Template.txt" download className="landing-btn-primary" style={{ width: '100%' }}>Download .TXT</a>
+              <p className="landing-body" style={{ marginBottom: '32px' }}>Don&apos;t have an existing document? Download our template in your preferred format. It contains the exact fields our AI engine requires.</p>
+              
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <a href="/CinaTech_Client_Onboarding_Template.txt" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.TXT</a>
+                <a href="/CinaTech_Client_Onboarding_Template.md" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.MD</a>
+                <a href="/CinaTech_Client_Onboarding_Template.rtf" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.RTF</a>
+              </div>
             </div>
 
             {/* Step 2 */}
             <div style={{ padding: '40px', border: '1px solid var(--lp-border)', background: 'rgba(15, 17, 20, 0.6)', backdropFilter: 'blur(12px)' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--lp-accent)', marginBottom: '20px' }}>STEP 02</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--lp-text-secondary)', marginBottom: '20px' }}>OPTIONAL STEP 02</div>
               <h2 className="landing-h2" style={{ fontSize: '32px', marginBottom: '20px' }}>Fill Client Details</h2>
-              <p className="landing-body">Paste your client's existing onboarding data, discovery call notes, or brief into the text document fields.</p>
+              <p className="landing-body">Paste your client&apos;s existing onboarding data, discovery call notes, or brief into the template document fields.</p>
             </div>
 
             {/* Step 3 */}
-            <div style={{ padding: '40px', border: '1px solid var(--lp-border)', background: 'rgba(15, 17, 20, 0.6)', backdropFilter: 'blur(12px)' }}>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--lp-accent)', marginBottom: '20px' }}>STEP 03</div>
+            <div style={{ padding: '40px', border: '1px solid var(--lp-accent)', background: 'rgba(90, 171, 220, 0.05)', backdropFilter: 'blur(12px)' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--lp-accent)', marginBottom: '20px' }}>STEP 03 (DIRECT)</div>
               <h2 className="landing-h2" style={{ fontSize: '32px', marginBottom: '20px' }}>Submit via Email</h2>
-              <p className="landing-body" style={{ marginBottom: '32px' }}>Send the completed form directly to the analysis queue. We will process it and return the full PDF report.</p>
-              <a href={mailtoLink} className="landing-btn-primary" style={{ width: '100%' }}>Email joseph@cinatech.ai</a>
+              <p className="landing-body" style={{ marginBottom: '32px' }}>Attach your completed template <strong style={{ color: 'var(--lp-text-primary)' }}>or your own existing onboarding document</strong>. We will process it immediately and return the full PDF report.</p>
+              <a href={mailtoLink} className="landing-btn-primary" style={{ width: '100%', background: 'var(--lp-accent)', color: '#000' }}>Email joseph@cinatech.ai</a>
             </div>
           </div>
         </div>
