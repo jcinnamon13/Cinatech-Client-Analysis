@@ -93,6 +93,9 @@ export default function LandingPage() {
       <header className="landing-nav">
         <div className="landing-container landing-nav-inner">
           <div className="landing-logo">CinaTech</div>
+          <a href="/free-analysis" className="landing-btn-primary">
+            Get Free Report
+          </a>
           <a href={DEMO_URL} className="landing-btn-primary" target="_blank" rel="noopener noreferrer">
             Book a free demo call
           </a>
