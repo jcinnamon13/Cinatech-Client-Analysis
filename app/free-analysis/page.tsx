@@ -14,7 +14,7 @@ export default function FreeAnalysis() {
   });
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showNotice, setShowNotice] = useState(true);
+  const [showNotice, setShowNotice] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +33,7 @@ export default function FreeAnalysis() {
 
       setIsSubmitting(false);
       setIsUnlocked(true);
+      setShowNotice(true);
       // Smooth scroll to the steps section to indicate success
       setTimeout(() => {
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -114,9 +115,9 @@ export default function FreeAnalysis() {
                 <p className="landing-body" style={{ marginBottom: '32px' }}>Don&apos;t have an existing document? Download our template in your preferred format. It contains the exact fields our AI engine requires.</p>
                 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  <a href="/CinaTech_Client_Onboarding_Template.txt" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.TXT</a>
-                  <a href="/CinaTech_Client_Onboarding_Template.md" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.MD</a>
-                  <a href="/CinaTech_Client_Onboarding_Template.rtf" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.RTF</a>
+                  <a href="/CinaTech_Client_Onboarding_Template.docx" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.DOCX</a>
+                  <a href="/CinaTech_Client_Onboarding_Template.csv" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.CSV</a>
+                  <a href="/CinaTech_Client_Onboarding_Template.xlsx" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.XLSX</a>
                 </div>
               </div>
 
