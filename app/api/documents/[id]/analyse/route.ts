@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { processAnalysis } from '@/lib/ai/process';
+import { DocumentTooLargeError } from '@/lib/ai/claude';
 
 // We might want to allow this to run for a while if it's a large document
 export const maxDuration = 180; // 3 minutes on Vercel Pro/Enterprise
@@ -20,6 +21,9 @@ export async function POST(
         return NextResponse.json({ success: true });
     } catch (error: any) {
         console.error('Analysis pipeline error:', error);
+        if (error instanceof DocumentTooLargeError) {
+            return NextResponse.json({ error: error.message }, { status: 400 });
+        }
         return NextResponse.json({ error: error.message || 'Unknown error' }, { status: 500 });
     }
 }

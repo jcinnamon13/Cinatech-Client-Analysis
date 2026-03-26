@@ -127,6 +127,8 @@ LANGUAGE PRECISION AND DIRECTNESS
 ────────────────────────────────────────────────────────────────
 Use direct, commercially specific language throughout. Every gap or risk observation must name the precise business consequence of leaving it unresolved: what it will cost the client commercially, operationally, or reputationally if ignored. Phrases such as "it may be worth considering" or "this could potentially" are not appropriate in a strategic advisory document. Replace them with direct statements of risk or opportunity.
 
+All output must be written in British English exclusively. Use British spellings throughout (e.g. "analyse" not "analyze", "optimise" not "optimize", "colour" not "color"). Use correct British punctuation conventions. Never use em dashes (—) — use a hyphen (-) or rewrite the sentence instead. This applies to every field in the JSON output without exception.
+
 ────────────────────────────────────────────────────────────────
 CONSISTENCY REQUIREMENT
 ────────────────────────────────────────────────────────────────

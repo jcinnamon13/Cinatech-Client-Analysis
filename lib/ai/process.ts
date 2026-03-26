@@ -3,6 +3,7 @@ import { parsePdf } from '@/lib/parsers/pdf';
 import { parseDocx } from '@/lib/parsers/docx';
 import { parseCsv } from '@/lib/parsers/csv';
 import { analyseDocument, extractMetadata } from '@/lib/ai/claude';
+import { parseImage } from '@/lib/parsers/image';
 import { Resend } from 'resend';
 import { cleanSummary } from '@/lib/utils';
 
@@ -33,6 +34,7 @@ export async function processAnalysis(documentId: string) {
 
         const buffer = Buffer.from(await fileData.arrayBuffer());
         let textContent = '';
+        let imageDataUri: string | undefined;
 
         // 3. Parse File
         if (document.file_type === 'pdf') {
@@ -44,18 +46,22 @@ export async function processAnalysis(documentId: string) {
         } else if (document.file_type === 'txt') {
             textContent = buffer.toString('utf-8').trim();
         } else if (document.file_type === 'image') {
-            throw new Error('Image parsing is not yet supported. Please upload PDF, DOCX, CSV, or TXT.');
+            const ext = document.file_path.split('.').pop()?.toLowerCase() ?? '';
+            const mimeType = ext === 'png' ? 'image/png'
+                : ext === 'webp' ? 'image/webp'
+                : 'image/jpeg';
+            imageDataUri = await parseImage(buffer, mimeType);
         } else {
             throw new Error(`Unsupported file type: ${document.file_type}`);
         }
 
-        if (!textContent || textContent.trim() === '') {
+        if (!imageDataUri && (!textContent || textContent.trim() === '')) {
             throw new Error('Could not extract any text from the document.');
         }
 
         // 4. Send to Claude API — run analysis and metadata extraction in parallel
         const [analysisResult, metadata] = await Promise.all([
-            analyseDocument(textContent),
+            analyseDocument(textContent, imageDataUri),
             extractMetadata(textContent),
         ]);
 

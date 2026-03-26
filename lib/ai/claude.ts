@@ -1,68 +1,116 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
+import { z } from 'zod';
 import { SYSTEM_PROMPT, SUMMARY_PROMPT, METADATA_PROMPT } from './prompts';
+
+export class DocumentTooLargeError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'DocumentTooLargeError';
+    }
+}
+
+const PillarSchema = z.object({
+    question: z.string(),
+    original_response: z.string(),
+    improved_response: z.string(),
+    recommendations: z.array(z.string()),
+    flags: z.array(z.string()),
+});
+
+const PriorityActionSchema = z.object({
+    action: z.string(),
+    owner: z.string(),
+    deadline: z.string(),
+    pillar: z.string(),
+    consequence: z.string(),
+});
+
+const AnalysisOutputSchema = z.object({
+    pillars: z.array(PillarSchema),
+    priority_action_plan: z.array(PriorityActionSchema),
+});
+
+const MetadataSchema = z.object({
+    company_name: z.string().nullable(),
+    individual_name: z.string().nullable(),
+    job_title: z.string().nullable(),
+});
 
 const anthropic = new Anthropic({
     apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-export async function analyseDocument(textStructure: string) {
+export async function analyseDocument(textStructure: string, imageDataUri?: string) {
     try {
-        // Only strictly truncate if the file is absurdly massive (e.g. >100k chars ~25k tokens)
-        // Haiku is fast enough to process this volume quickly.
-        const safeTextStructure = textStructure.length > 100000
-            ? textStructure.substring(0, 100000) + "\n...[CONTENT TRUNCATED FOR LENGTH]..."
-            : textStructure;
+        if (!imageDataUri) {
+            const CHAR_LIMIT = 100_000;
+            if (textStructure.length > CHAR_LIMIT) {
+                const overage = textStructure.length - CHAR_LIMIT;
+                throw new DocumentTooLargeError(
+                    `Document too large to analyse: ${textStructure.length.toLocaleString()} characters ` +
+                    `(${overage.toLocaleString()} over the ${CHAR_LIMIT.toLocaleString()} character limit). ` +
+                    `Split the document into smaller sections or remove non-essential content before retrying.`
+                );
+            }
+        }
 
-        const response = await anthropic.messages.create({
-            model: 'claude-sonnet-4-6',
-            max_tokens: 8192,
-            temperature: 0.2, // Low temperature for consistent JSON structure
-            system: SYSTEM_PROMPT,
+        const userContent: Anthropic.MessageParam['content'] = imageDataUri
+            ? (() => {
+                const [header, base64Data] = imageDataUri.split(',');
+                const mediaType = header.split(':')[1].split(';')[0] as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp';
+                return [
+                    {
+                        type: 'image' as const,
+                        source: { type: 'base64' as const, media_type: mediaType, data: base64Data },
+                    },
+                    {
+                        type: 'text' as const,
+                        text: 'Analyse the client onboarding document shown in this image and return the structured JSON array as instructed.',
+                    },
+                ];
+            })()
+            : [
+                {
+                    type: 'text' as const,
+                    text: `Analyse the following client onboarding document text and return the structured JSON array as instructed:\n\n<document>\n${textStructure}\n</document>`,
+                },
+            ];
+
+        const response = await anthropic.messages.parse({
+            model: 'claude-opus-4-6',
+            max_tokens: 16000,
+            temperature: 0.2,
+            system: [
+                {
+                    type: 'text' as const,
+                    text: SYSTEM_PROMPT,
+                    cache_control: { type: 'ephemeral' as const },
+                }
+            ],
             messages: [
                 {
                     role: 'user',
-                    content: [
-                        {
-                            type: 'text',
-                            text: `Analyze the following client onboarding document text and return the structured JSON array as instructed:\n\n<document>\n${safeTextStructure}\n</document>`
-                        }
-                    ]
+                    content: userContent,
                 }
-            ]
+            ],
+            output_config: {
+                format: zodOutputFormat(AnalysisOutputSchema),
+            },
         });
 
-        const responseText = response.content[0].type === 'text' ? response.content[0].text : '';
-
-        try {
-            const fs = await import('fs');
-            fs.writeFileSync('/tmp/claude_raw_json.log', `Stop Reason: ${response.stop_reason}\n\n${responseText}`);
-        } catch (e) { }
-
-        // Sometimes Claude adds markdown JSON block or conversational text despite instructions.
-        // We find the first '[' and last ']' to isolate the JSON array.
-        let cleanJson = responseText;
-        // Search for the start of the JSON object containing the expected keys
-        const firstBracket = responseText.search(/\{\s*"(?:pillars|priority_action_plan)"/);
-        const lastBracket = responseText.lastIndexOf('}');
-
-        if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
-            cleanJson = responseText.substring(firstBracket, lastBracket + 1);
-        } else {
-            // Fallback: just strip markdown blocks if brackets aren't found
-            cleanJson = responseText.replace(/^```json\s * /i, '').replace(/\s * ```$/i, '').trim();
+        if (response.stop_reason === 'max_tokens') {
+            throw new Error('Analysis output was truncated before completion. Increase max_tokens or reduce document length.');
+        }
+        if (response.stop_reason === 'refusal') {
+            throw new Error('Claude refused to analyse this document. Review content for policy violations.');
         }
 
-        let structuredResult;
-        try {
-            structuredResult = JSON.parse(cleanJson);
-        } catch (error) {
-            console.error('Failed to parse Claude JSON output:', cleanJson);
-            throw new Error('Claude returned invalid JSON format: ' + (error instanceof Error ? error.message : String(error)));
-        }
+        const structuredResult = response.parsed_output;
 
         // Secondary call for the Executive Summary
         const summaryResponse = await anthropic.messages.create({
-            model: 'claude-sonnet-4-6',
+            model: 'claude-opus-4-6',
             max_tokens: 500,
             temperature: 0.5,
             system: "You are an elite senior business consultant writing a summary for an agency.",
@@ -87,7 +135,15 @@ export async function analyseDocument(textStructure: string) {
         };
 
     } catch (error) {
-        console.error('Claude API Error:', error);
+        if (error instanceof Anthropic.RateLimitError) {
+            console.error('Claude API rate limit exceeded — retry after backoff:', error.message);
+        } else if (error instanceof Anthropic.BadRequestError) {
+            console.error('Claude API bad request — check input content:', error.message);
+        } else if (error instanceof Anthropic.APIError) {
+            console.error(`Claude API error (status ${error.status}):`, error.message);
+        } else {
+            console.error('Claude API Error:', error);
+        }
         throw error;
     }
 }
@@ -109,7 +165,7 @@ export async function extractMetadata(textContent: string): Promise<DocumentMeta
             ? textContent.substring(0, 20000) + '\n...[TRUNCATED]'
             : textContent;
 
-        const response = await anthropic.messages.create({
+        const response = await anthropic.messages.parse({
             model: 'claude-haiku-4-5',
             max_tokens: 256,
             temperature: 0,
@@ -118,17 +174,23 @@ export async function extractMetadata(textContent: string): Promise<DocumentMeta
                     role: 'user',
                     content: `${METADATA_PROMPT}\n\n<document>\n${safeText}\n</document>`
                 }
-            ]
+            ],
+            output_config: {
+                format: zodOutputFormat(MetadataSchema),
+            },
         });
 
-        const raw = response.content[0].type === 'text' ? response.content[0].text.trim() : '';
-        // Strip markdown fences if present
-        const clean = raw.replace(/^```json\s*/i, '').replace(/\s*```$/, '').trim();
-        const parsed = JSON.parse(clean);
+        if (response.stop_reason === 'max_tokens') {
+            throw new Error('Metadata extraction was truncated.');
+        }
+        if (response.stop_reason === 'refusal') {
+            throw new Error('Claude refused to extract metadata from this document.');
+        }
+
         return {
-            company_name: parsed.company_name ?? null,
-            individual_name: parsed.individual_name ?? null,
-            job_title: parsed.job_title ?? null,
+            company_name: response.parsed_output?.company_name ?? null,
+            individual_name: response.parsed_output?.individual_name ?? null,
+            job_title: response.parsed_output?.job_title ?? null,
         };
     } catch (err) {
         console.warn('extractMetadata failed, returning nulls:', err);
