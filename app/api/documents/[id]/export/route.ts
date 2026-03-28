@@ -1,3 +1,5 @@
+import path from 'path';
+import sharp from 'sharp';
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import type { Pillar, ActionItem, StructuredResult } from '@/types';
@@ -237,6 +239,9 @@ async function buildPdf(
     summary: string | null,
     structured: StructuredResult
 ): Promise<Buffer> {
+    const logoPath = path.join(process.cwd(), 'public', 'logo.png');
+    const logoBuffer = await sharp(logoPath).trim().png().toBuffer();
+
     return new Promise<Buffer>((resolve, reject) => {
         // ── Layout constants ────────────────────────────────────────────────
         const M           = 60;
@@ -419,10 +424,15 @@ async function buildPdf(
         doc.font('Helvetica-Bold').fontSize(14).fillColor(`#${WHITE}`)
            .text('CLIENT ANALYSIS REPORT', 0, 54, { width: 595.28, align: 'center' });
 
-        doc.font('Helvetica-Bold').fontSize(28).fillColor(`#${PDF_LIGHT}`)
-           .text(clientName, M, BAND_H + 60, { width: CW, align: 'center' });
+        // Logo centred below the header band — trim white border, preserve transparency
+        const logoW = 120;
+        const logoX = (595.28 - logoW) / 2;
+        doc.image(logoBuffer, logoX, BAND_H + 10, { width: logoW });
 
-        const sepY = BAND_H + 120;
+        doc.font('Helvetica-Bold').fontSize(28).fillColor(`#${PDF_LIGHT}`)
+           .text(clientName, M, BAND_H + 150, { width: CW, align: 'center' });
+
+        const sepY = BAND_H + 210;
         doc.moveTo(M, sepY).lineTo(M + CW, sepY).strokeColor(`#${INDIGO}`).lineWidth(1).stroke();
 
         doc.font('Helvetica').fontSize(10).fillColor(`#${PDF_LGREY}`)

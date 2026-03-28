@@ -708,58 +708,232 @@ body:has(.landing-nav) button {
   overflow: hidden;
 }
 
-.landing-masonry {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 20px;
-  margin-top: 60px;
-  position: relative;
-}
+/* ── PDF Viewer ─────────────────────────────────────────────────────────────── */
 
-.landing-masonry-item {
+.pdf-viewer-wrapper {
+  border: 1px solid var(--lp-border);
+  background: var(--bg-card);
   position: relative;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-  border: 1px solid rgba(255,255,255,0.05);
-  cursor: pointer;
-  background: #000;
   overflow: hidden;
-  padding: 0;
 }
 
-.landing-masonry-item img {
-  opacity: 0.6;
-  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  width: 100%; height: auto; display: block;
+/* ── PDF Teaser Card ─────────────────────────────────────────────────────────── */
+
+.pdf-teaser-card {
+  margin-top: 60px;
+  height: 300px;
+  border: 1px solid var(--lp-border);
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 48px;
+  position: relative;
+  box-shadow: 0 0 0 1px var(--lp-border), 0 0 60px var(--lp-indigo-glow);
+  text-align: center;
 }
 
-.landing-masonry-item:hover {
-  transform: translateY(-10px);
-  z-index: 10;
-  border-color: var(--lp-accent);
-}
-
-.landing-masonry-item:hover img {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-.landing-item-0 { grid-column: 1 / 8; margin-bottom: -100px; z-index: 1; }
-.landing-item-1 { grid-column: 6 / 13; margin-top: 60px; z-index: 2; }
-.landing-item-2 { grid-column: 3 / 10; margin-top: -80px; z-index: 3; }
-
-.landing-disclaimer {
-  grid-column: 1 / -1;
-  margin-top: 80px;
+.pdf-teaser-label {
   font-family: var(--font-mono), monospace;
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--lp-text-secondary);
-  border-top: 1px solid var(--lp-border);
-  padding-top: 24px;
+  letter-spacing: 0.12em;
+  color: var(--lp-primary-blue);
+  opacity: 0.8;
 }
-.landing-disclaimer a { color: var(--lp-accent); text-decoration: none; }
+
+.pdf-teaser-title {
+  font-family: var(--font-serif), serif;
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 500;
+  color: var(--lp-text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.pdf-teaser-desc {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 14px;
+  color: var(--lp-text-secondary);
+  margin: 0;
+  max-width: 420px;
+}
+
+.pdf-teaser-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #000;
+  background: var(--lp-accent);
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.pdf-teaser-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--lp-accent-glow);
+}
+
+/* ── PDF Modal ───────────────────────────────────────────────────────────────── */
+
+.pdf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.pdf-modal-inner {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-modal-close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  background: none;
+  border: none;
+  color: var(--lp-text-primary);
+  font-family: var(--font-serif), serif;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+  z-index: 10;
+}
+
+.pdf-modal-close:hover {
+  color: var(--lp-accent);
+}
+
+@media (max-width: 600px) {
+  .pdf-teaser-card { height: auto; min-height: 260px; padding: 32px 24px; }
+  .pdf-modal-overlay { padding: 16px; align-items: flex-start; }
+  .pdf-modal-close { top: -40px; font-size: 26px; }
+}
+
+.pdf-viewer-stage {
+  flex: 1;
+  max-height: calc(90vh - 120px);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: var(--bg-card);
+}
+
+.pdf-viewer-stage canvas {
+  display: block;
+  max-width: 100%;
+}
+
+.react-pdf__Document {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+}
+
+.react-pdf__Page {
+  background: transparent !important;
+}
+
+.pdf-viewer-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--lp-border);
+  background: rgba(15, 17, 20, 0.8);
+}
+
+.pdf-viewer-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--lp-primary-blue);
+  color: var(--lp-primary-blue);
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-family: var(--font-serif), serif;
+  flex-shrink: 0;
+}
+
+.pdf-viewer-arrow:hover:not(:disabled) {
+  background: var(--lp-primary-blue);
+  color: #fff;
+}
+
+.pdf-viewer-arrow:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.pdf-viewer-counter {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lp-primary-blue);
+  flex: 1;
+  text-align: center;
+}
+
+.pdf-viewer-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #000;
+  background: var(--lp-accent);
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.pdf-viewer-download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--lp-accent-glow);
+}
+
+@media (max-width: 768px) {
+  .pdf-viewer-controls { flex-wrap: wrap; gap: 12px; padding: 14px 16px; }
+  .pdf-viewer-counter { order: -1; width: 100%; text-align: left; }
+  .pdf-viewer-download-btn { width: 100%; justify-content: center; }
+}
+
 
 .landing-features-section {
   background: transparent;
@@ -983,75 +1157,12 @@ body:has(.landing-nav) button {
   text-align: center;
 }
 
-.landing-modal-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(15, 17, 20, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 40px;
-  animation: modalFade 0.4s ease forwards;
-}
-
-@keyframes modalFade {
-  from { opacity: 0; backdrop-filter: blur(0px); }
-  to { opacity: 1; backdrop-filter: blur(20px); }
-}
-
-.landing-modal-content {
-  position: relative;
-  max-width: 1400px;
-  width: 100%;
-  max-height: 85vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.landing-modal-close {
-  position: absolute;
-  top: -60px;
-  right: 0;
-  background: none;
-  border: none;
-  color: var(--lp-text-primary);
-  font-family: var(--font-serif), serif;
-  font-size: 40px;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.landing-modal-close:hover {
-  color: var(--lp-accent);
-}
-
-.landing-modal-image-wrapper {
-  overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0,0,0,1);
-}
-
-.landing-modal-description {
-  margin-top: 32px;
-  color: var(--lp-accent);
-  font-family: var(--font-mono), monospace;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  max-width: 800px;
-}
 
 @media (max-width: 1024px) {
   .landing-hero { flex-direction: column; justify-content: center; }
   .landing-hero-grid { grid-template-columns: 1fr; gap: 40px; }
   .landing-hero-title-wrapper { grid-column: 1; }
   .landing-hero-sub-wrapper, .landing-hero-sub-wrapper-left { grid-column: 1; margin-top: 0; width: 100%; opacity: 1; animation: none; }
-  
-  .landing-masonry { grid-template-columns: 1fr; gap: 40px; }
-  .landing-item-0, .landing-item-1, .landing-item-2 { grid-column: 1; margin: 0; }
   
   .landing-pricing-grid { grid-template-columns: 1fr; gap: 0; }
   .landing-pricing-card-small { grid-column: 1; padding: 32px; border-bottom: none; }

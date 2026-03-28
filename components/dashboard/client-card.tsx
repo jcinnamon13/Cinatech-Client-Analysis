@@ -62,7 +62,7 @@ export function ClientCard({ client }: { client: Client }) {
                     </div>
                     <div className="min-w-0">
                         <h3 className="font-semibold text-[var(--text-primary)] text-base truncate" title={client.name}>{client.name}</h3>
-                        <p className="text-xs text-[var(--text-secondary)]">Added {formatRelativeDate(client.created_at)}</p>
+                        <p className="text-xs text-[var(--text-secondary)]" suppressHydrationWarning>Added {formatRelativeDate(client.created_at)}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">

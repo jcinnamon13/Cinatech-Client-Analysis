@@ -1,29 +1,16 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import Image from 'next/image';
+import { useRef } from 'react';
+import dynamic from 'next/dynamic';
 import { motion, useInView } from 'framer-motion';
+
+const PdfViewer = dynamic(() => import('@/components/pdf-viewer'), {
+  ssr: false,
+  loading: () => <div className="shimmer" style={{ height: '600px', width: '100%' }} />,
+});
 
 const DEMO_URL =
   'https://cal.com/joe-cinnamon-avdsnj/cinatech-30-min-agency-strategy-call';
-
-const previewImages = [
-  {
-    src: '/screenshot-1.png',
-    alt: 'Detailed Analysis section',
-    description: 'Detailed competitive positioning and differentiation analysis, highlighting strategic gaps and areas for clarification.',
-  },
-  {
-    src: '/screenshot-2.png',
-    alt: 'Regulatory and Compliance Exposure section',
-    description: 'Sector-specific regulatory and compliance exposure checks, identifying legal risks before campaigns launch.',
-  },
-  {
-    src: '/screenshot-3.png',
-    alt: 'Priority Action Plan section',
-    description: 'A ranked, prioritised action plan outlining immediately actionable steps and their potential business impact.',
-  },
-];
 
 const reportItems = [
   {
@@ -75,61 +62,20 @@ function RevealSection({
 }
 
 export default function LandingPage() {
-  const [selectedImage, setSelectedImage] = useState<typeof previewImages[0] | null>(null);
-
-  // Close modal on escape key
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') setSelectedImage(null);
-  };
-
   return (
     <>
-      {/* ── IMAGE MODAL TAKE-OVER ─────────────────────────────────────── */}
-      {selectedImage && (
-        <div
-          className="landing-modal-overlay"
-          onClick={() => setSelectedImage(null)}
-          onKeyDown={handleKeyDown}
-          tabIndex={0}
-          role="button"
-          aria-label="Close image preview"
-        >
-          <div className="landing-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="landing-modal-close"
-              onClick={() => setSelectedImage(null)}
-              aria-label="Close"
-            >
-              ✕
-            </button>
-            <div className="landing-modal-image-wrapper">
-              <Image
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                width={1400}
-                height={1000}
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-                quality={100}
-                priority
-              />
-            </div>
-            <div className="landing-modal-description">
-              <p>{selectedImage.description}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* ── NAV ───────────────────────────────────────────────────────── */}
       <header className="landing-nav">
         <div className="landing-container landing-nav-inner">
           <div className="landing-logo">CinaTech</div>
-          <a href="/free-analysis" className="landing-btn-primary">
-            Get Free Report
-          </a>
-          <a href={DEMO_URL} className="landing-btn-primary" target="_blank" rel="noopener noreferrer">
-            Book a free demo call
-          </a>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <a href="/free-analysis" className="landing-btn-primary">
+              Get Free Report
+            </a>
+            <a href={DEMO_URL} className="landing-btn-primary" target="_blank" rel="noopener noreferrer">
+              Book a free demo call
+            </a>
+          </div>
         </div>
       </header>
 
@@ -166,35 +112,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ── REPORT PREVIEW (Masonry) ──────────────────────────────────── */}
+        {/* ── REPORT PREVIEW (PDF Viewer) ───────────────────────────────── */}
         <RevealSection className="landing-section landing-preview-section">
           <div className="landing-container">
             <h2 className="landing-h2">See exactly what it produces.</h2>
-            <div className="landing-masonry">
-              {previewImages.map((img, idx) => (
-                <motion.button
-                  key={idx}
-                  className={`landing-masonry-item landing-item-${idx}`}
-                  onClick={() => setSelectedImage(img)}
-                  aria-label={`View full screen: ${img.alt}`}
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    width={1000}
-                    height={750}
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                  />
-                </motion.button>
-              ))}
-              <div className="landing-disclaimer">
-                * Note: The images above are excerpts, not a full report, and specific client information has been redacted.
-                One free live demo is available per agency. To request a full length, redacted case study example,
-                please contact <a href="mailto:joseph@cinatech.ai">joseph@cinatech.ai</a>.
-              </div>
-            </div>
+            <PdfViewer />
           </div>
         </RevealSection>
 
