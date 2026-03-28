@@ -1,0 +1,56 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  # Suppress puppeteer's automatic Chromium download during npm ci.
+  # puppeteer is a runtime dep; Playwright brings its own Chromium —
+  # without this the two downloads conflict in CI.
+  PUPPETEER_SKIP_DOWNLOAD: "true"
+
+jobs:
+  e2e:
+    name: Playwright E2E (setup + e2e)
+    runs-on: ubuntu-latest
+
+    env:
+      NEXT_PUBLIC_SUPABASE_URL:      ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY:     ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ANTHROPIC_API_KEY:             ${{ secrets.ANTHROPIC_API_KEY }}
+      TEST_USER_EMAIL:               ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD:            ${{ secrets.TEST_USER_PASSWORD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies (skip puppeteer Chromium)
+        run: npm ci
+
+      - name: Install Playwright's Chromium browser
+        run: npx playwright install chromium --with-deps
+
+      - name: Build Next.js application
+        run: npm run build
+
+      - name: Run E2E tests (setup + e2e projects)
+        run: npm run test:e2e
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
