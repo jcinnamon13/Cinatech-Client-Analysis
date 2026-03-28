@@ -37,8 +37,8 @@ export default async function DashboardPage() {
         <div className="flex flex-col gap-6 animate-fade-in max-w-6xl mx-auto py-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Dashboard</h1>
-                    <p className="text-slate-400 text-sm">
+                    <h1 className="text-3xl font-bold tracking-tight text-[var(--text-primary)] mb-2">Dashboard</h1>
+                    <p className="text-[var(--text-secondary)] text-sm">
                         Overview of your client onboarding documents and AI analyses.
                     </p>
                 </div>
@@ -50,14 +50,14 @@ export default async function DashboardPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
                 <div className="glass-card p-6 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
                     <div className="flex items-center gap-4 relative z-10">
-                        <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+                        <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-[var(--accent-indigo)]">
                             <Users strokeWidth={1.5} />
                         </div>
                         <div>
-                            <div className="text-sm text-slate-400 font-medium mb-1">Total Clients</div>
-                            <div className="text-3xl font-bold text-white">{totalClients}</div>
+                            <div className="text-sm text-[var(--text-secondary)] font-medium mb-1">Total Clients</div>
+                            <div className="text-3xl font-bold text-[var(--text-primary)]">{totalClients}</div>
                         </div>
                     </div>
                 </div>
@@ -65,12 +65,12 @@ export default async function DashboardPage() {
                 <div className="glass-card p-6 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
                     <div className="flex items-center gap-4 relative z-10">
-                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                        <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-[var(--accent-emerald)]">
                             <FileText strokeWidth={1.5} />
                         </div>
                         <div>
-                            <div className="text-sm text-slate-400 font-medium mb-1">Documents Analysed</div>
-                            <div className="text-3xl font-bold text-white">{totalDocs - pendingDocs}</div>
+                            <div className="text-sm text-[var(--text-secondary)] font-medium mb-1">Documents Analysed</div>
+                            <div className="text-3xl font-bold text-[var(--text-primary)]">{totalDocs - pendingDocs}</div>
                         </div>
                     </div>
                 </div>
@@ -78,12 +78,12 @@ export default async function DashboardPage() {
                 <div className="glass-card p-6 relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
                     <div className="flex items-center gap-4 relative z-10">
-                        <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400">
+                        <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-[var(--accent-amber)]">
                             <Settings strokeWidth={1.5} className={pendingDocs > 0 ? "animate-spin-slow" : ""} />
                         </div>
                         <div>
-                            <div className="text-sm text-amber-400/80 font-medium mb-1">Pending Analysis</div>
-                            <div className="text-3xl font-bold text-amber-400">{pendingDocs}</div>
+                            <div className="text-sm text-[var(--accent-amber)]/80 font-medium mb-1">Pending Analysis</div>
+                            <div className="text-3xl font-bold text-[var(--accent-amber)]">{pendingDocs}</div>
                         </div>
                     </div>
                 </div>
@@ -91,11 +91,11 @@ export default async function DashboardPage() {
 
             {totalClients === 0 ? (
                 <div className="glass-card mt-8 flex flex-col items-center justify-center p-16 text-center shadow-lg border-dashed border-2 border-white/5">
-                    <div className="w-20 h-20 rounded-full bg-blue-500/10 flex items-center justify-center mb-6 text-blue-400">
+                    <div className="w-20 h-20 rounded-full bg-indigo-500/10 flex items-center justify-center mb-6 text-[var(--accent-indigo)]">
                         <File className="w-10 h-10" strokeWidth={1.5} />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">No clients yet</h3>
-                    <p className="text-slate-400 max-w-md mx-auto mb-8">
+                    <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">No clients yet</h3>
+                    <p className="text-[var(--text-secondary)] max-w-md mx-auto mb-8">
                         Get started by uploading your first client onboarding form for our AI consultant to analyse and generate actionable recommendations.
                     </p>
                     <Link href="/upload" className="btn-primary px-8 py-3 text-sm font-medium">
@@ -105,7 +105,7 @@ export default async function DashboardPage() {
                 </div>
             ) : (
                 <div className="mt-8 space-y-6">
-                    <h2 className="text-lg font-semibold text-white px-1">Recent Clients</h2>
+                    <h2 className="text-lg font-semibold text-[var(--text-primary)] px-1">Recent Clients</h2>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {clients?.map(client => (

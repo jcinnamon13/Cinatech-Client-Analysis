@@ -40,6 +40,23 @@ export default async function SharedReportPage({
         notFound();
     }
 
+    // Check token expiry — null means never expires (existing documents)
+    if (document.share_expires_at && new Date(document.share_expires_at) < new Date()) {
+        return (
+            <div className="min-h-screen bg-[#070B14] text-white flex items-center justify-center">
+                <div className="max-w-md mx-auto px-4 text-center space-y-4">
+                    <div className="p-3 bg-amber-500/10 rounded-full w-14 h-14 flex items-center justify-center mx-auto">
+                        <Clock className="w-7 h-7 text-amber-400" />
+                    </div>
+                    <h1 className="text-xl font-semibold text-white">This link has expired</h1>
+                    <p className="text-zinc-400 text-sm leading-relaxed">
+                        This report link is no longer active. Please contact the person who shared it with you to request a new link.
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
     const clientName = document.clients?.name || 'Client';
     // Sort analyses by created_at desc and take the latest
     const sortedAnalyses = (document.analyses || []).sort(

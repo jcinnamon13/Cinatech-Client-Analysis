@@ -1,9 +1,70 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
 export async function POST(request: Request) {
   try {
     const data = await request.json();
+
+    // ── 1. Rate Limiting ─────────────────────────────────────────────────────
+    const ip = request.headers.get('x-forwarded-for') ?? 'unknown';
+    const now = Date.now();
+    const windowMs = 60 * 60 * 1000; // 1 hour
+    const maxRequests = 3;
+
+    const entry = rateLimitMap.get(ip);
+    if (entry && now < entry.resetTime) {
+      if (entry.count >= maxRequests) {
+        const retryAfterSeconds = Math.ceil((entry.resetTime - now) / 1000);
+        return NextResponse.json(
+          { error: 'Too many requests. Please try again later.' },
+          { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+        );
+      }
+      entry.count += 1;
+    } else {
+      rateLimitMap.set(ip, { count: 1, resetTime: now + windowMs });
+    }
+
+    // ── 2. Input Validation ───────────────────────────────────────────────────
+    const { fullName: rawFullName, email: rawEmail, summary: rawSummary } = data;
+
+    if (!rawFullName || typeof rawFullName !== 'string' || rawFullName.trim() === '') {
+      return NextResponse.json({ error: 'fullName is required.' }, { status: 400 });
+    }
+    if (!rawEmail || typeof rawEmail !== 'string' || rawEmail.trim() === '') {
+      return NextResponse.json({ error: 'email is required.' }, { status: 400 });
+    }
+    if (!rawSummary || typeof rawSummary !== 'string' || rawSummary.trim() === '') {
+      return NextResponse.json({ error: 'summary is required.' }, { status: 400 });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(rawEmail.trim())) {
+      return NextResponse.json({ error: 'email is not a valid address.' }, { status: 400 });
+    }
+
+    // ── 3. Spam Filtering ─────────────────────────────────────────────────────
+    const urlPattern = /https?:\/\/|www\./i;
+    if (urlPattern.test(rawFullName)) {
+      return NextResponse.json({ error: 'Submission rejected.' }, { status: 400 });
+    }
+
+    const spamKeywords = [
+      'casino', 'viagra', 'crypto', 'nft',
+      'click here', 'free money', 'earn money', 'make money',
+    ];
+    const allFieldValues = Object.values(data).map((v) =>
+      typeof v === 'string' ? v.toLowerCase() : ''
+    );
+    const isSpam = spamKeywords.some((keyword) =>
+      allFieldValues.some((fieldValue) => fieldValue.includes(keyword))
+    );
+    if (isSpam) {
+      return NextResponse.json({ error: 'Submission rejected.' }, { status: 400 });
+    }
+
     const { fullName, email, phone, website, summary } = data;
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

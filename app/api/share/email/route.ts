@@ -3,9 +3,8 @@ import { createClient } from '@/lib/supabase/server';
 import { Resend } from 'resend';
 import { cleanSummary } from '@/lib/utils';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: Request) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();

@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { File, ChevronLeft, Calendar } from 'lucide-react';
 import { formatRelativeDate, getStatusColor, getStatusLabel } from '@/lib/utils';
+import type { Document } from '@/types';
 
 export default async function ClientPage(props: { params: Promise<{ clientId: string }> }) {
     const params = await props.params;
@@ -39,7 +40,7 @@ export default async function ClientPage(props: { params: Promise<{ clientId: st
     }
 
     // Sort documents by newest first
-    const documents = client.documents?.sort((a: any, b: any) => 
+    const documents = client.documents?.sort((a: Document, b: Document) =>
         new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
     ) || [];
 

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
+import { motion, useInView } from 'framer-motion';
 
 const DEMO_URL =
   'https://cal.com/joe-cinnamon-avdsnj/cinatech-30-min-agency-strategy-call';
@@ -43,6 +44,36 @@ const reportItems = [
   },
 ];
 
+const REVEAL = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const TRANSITION = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const };
+
+function RevealSection({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+  return (
+    <motion.section
+      ref={ref}
+      className={className}
+      variants={REVEAL}
+      initial="hidden"
+      animate={inView ? 'visible' : 'hidden'}
+      transition={TRANSITION}
+    >
+      {children}
+    </motion.section>
+  );
+}
+
 export default function LandingPage() {
   const [selectedImage, setSelectedImage] = useState<typeof previewImages[0] | null>(null);
 
@@ -55,8 +86,8 @@ export default function LandingPage() {
     <>
       {/* ── IMAGE MODAL TAKE-OVER ─────────────────────────────────────── */}
       {selectedImage && (
-        <div 
-          className="landing-modal-overlay" 
+        <div
+          className="landing-modal-overlay"
           onClick={() => setSelectedImage(null)}
           onKeyDown={handleKeyDown}
           tabIndex={0}
@@ -64,8 +95,8 @@ export default function LandingPage() {
           aria-label="Close image preview"
         >
           <div className="landing-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button 
-              className="landing-modal-close" 
+            <button
+              className="landing-modal-close"
               onClick={() => setSelectedImage(null)}
               aria-label="Close"
             >
@@ -136,16 +167,18 @@ export default function LandingPage() {
         </section>
 
         {/* ── REPORT PREVIEW (Masonry) ──────────────────────────────────── */}
-        <section className="landing-section landing-preview-section">
+        <RevealSection className="landing-section landing-preview-section">
           <div className="landing-container">
             <h2 className="landing-h2">See exactly what it produces.</h2>
             <div className="landing-masonry">
               {previewImages.map((img, idx) => (
-                <button 
-                  key={idx} 
+                <motion.button
+                  key={idx}
                   className={`landing-masonry-item landing-item-${idx}`}
                   onClick={() => setSelectedImage(img)}
                   aria-label={`View full screen: ${img.alt}`}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <Image
                     src={img.src}
@@ -154,52 +187,65 @@ export default function LandingPage() {
                     height={750}
                     style={{ width: '100%', height: 'auto', display: 'block' }}
                   />
-                </button>
+                </motion.button>
               ))}
               <div className="landing-disclaimer">
-                * Note: The images above are excerpts, not a full report, and specific client information has been redacted. 
-                One free live demo is available per agency. To request a full length, redacted case study example, 
+                * Note: The images above are excerpts, not a full report, and specific client information has been redacted.
+                One free live demo is available per agency. To request a full length, redacted case study example,
                 please contact <a href="mailto:joseph@cinatech.ai">joseph@cinatech.ai</a>.
               </div>
             </div>
           </div>
-        </section>
+        </RevealSection>
 
         {/* ── WHAT'S INCLUDED (Brutalist Rows) ──────────────────────────── */}
-        <section className="landing-section landing-features-section">
+        <RevealSection className="landing-section landing-features-section">
           <div className="landing-container">
             <h2 className="landing-h2">What every report includes.</h2>
             <div className="landing-features-list">
               {reportItems.map((item, index) => (
-                <div key={item.title} className="landing-feature-row">
+                <motion.div
+                  key={item.title}
+                  className="landing-feature-row"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: index * 0.1 }}
+                >
                   <div className="landing-feature-number">0{index + 1}</div>
                   <h3 className="landing-feature-title">{item.title}</h3>
                   <p className="landing-feature-body">{item.body}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
-        </section>
+        </RevealSection>
 
         {/* ── PRICING (Grid Breaking) ───────────────────────────────────── */}
-        <section className="landing-section landing-pricing-section">
+        <RevealSection className="landing-section landing-pricing-section">
           <div className="landing-container">
             <h2 className="landing-h2" style={{ marginBottom: 0 }}>Simple pricing.</h2>
             <div className="landing-pricing-grid">
-              
-              <div className="landing-pricing-card-small">
+
+              <motion.div
+                className="landing-pricing-card-small"
+                whileHover={{ y: -8, transition: { duration: 0.3, ease: 'easeOut' } }}
+              >
                 <p className="landing-pricing-label">Per Report</p>
                 <p className="landing-pricing-price">£197</p>
                 <p className="landing-pricing-desc">Order a single analysis for any client onboarding.</p>
                 <a href="https://buy.stripe.com/fZuaEYbbc8TdgJp3aU33W03" className="landing-btn-primary" target="_blank" rel="noopener noreferrer" style={{ marginTop: '32px' }}>Buy Now</a>
-              </div>
-              
-              <div className="landing-pricing-card-hero">
+              </motion.div>
+
+              <motion.div
+                className="landing-pricing-card-hero"
+                whileHover={{ y: -8, transition: { duration: 0.3, ease: 'easeOut' } }}
+              >
                 <p className="landing-pricing-label">Most Popular - Monthly</p>
                 <p className="landing-pricing-price">£397<span className="landing-pricing-period">/mo</span></p>
                 <p className="landing-pricing-desc">Unlimited reports for your whole agency.</p>
                 <a href="https://buy.stripe.com/fZucN62EG9Xhal1h1K33W04" className="landing-btn-primary" target="_blank" rel="noopener noreferrer" style={{ marginTop: '48px' }}>Buy Now</a>
-              </div>
+              </motion.div>
 
               <div className="landing-pricing-note">
                 First agencies through the door receive founding pricing. Book a call to find out more.
@@ -207,10 +253,10 @@ export default function LandingPage() {
 
             </div>
           </div>
-        </section>
+        </RevealSection>
 
         {/* ── FINAL CTA ─────────────────────────────────────────────────── */}
-        <section className="landing-section landing-cta-section">
+        <RevealSection className="landing-section landing-cta-section">
           <div className="landing-container">
             <h2 className="landing-h2">Want to see it on one of your real clients?</h2>
             <p className="landing-body" style={{ margin: '0 auto 48px', maxWidth: '600px' }}>
@@ -221,7 +267,7 @@ export default function LandingPage() {
               Book a free demo call
             </a>
           </div>
-        </section>
+        </RevealSection>
       </main>
 
       {/* ── FOOTER ────────────────────────────────────────────────────── */}

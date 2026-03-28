@@ -1,0 +1,26 @@
+Client Name: E2E Test Client
+Industry: Marketing Agency / SaaS
+
+Q: What are your 3 main business goals for the next 12 months?
+A: Grow MRR by 50% from a current base of £40,000/month. Reduce client churn below 3% monthly. Launch an enterprise tier targeting businesses with 50+ employees.
+
+Q: What is your biggest current challenge?
+A: We have no repeatable client acquisition channel. We rely entirely on referrals from existing clients and word of mouth, which is unpredictable and does not scale. We have no outbound process, no content strategy, and no paid acquisition.
+
+Q: Who is your target audience?
+A: Small professional services firms with 10 to 50 employees. Primary decision-maker is typically a founder or operations director. Key verticals include chiropractic practices, dental clinics, and boutique law firms. These clients share a common profile: busy owner-operators who distrust generic marketing agencies but respond to sector-specific expertise and case studies.
+
+Q: What is your current monthly marketing spend?
+A: Approximately £2,000 per month on LinkedIn ads with no attribution tracking in place. We cannot currently measure ROI from this spend.
+
+Q: Do you offer a performance guarantee or results-based commitment to your clients?
+A: Yes. We offer a 12-month satisfaction guarantee. If agreed performance targets are not met by month 12, we provide an additional 3 months of work at no charge. This is communicated verbally and is not yet documented in contracts.
+
+Q: What are your top 3 competitors and how do you differentiate?
+A: Our three main competitors are Agency A, Agency B, and Agency C. We differentiate on three factors: a single dedicated account lead per client rather than an account team, deep specialism in health and professional services verticals, and a guaranteed outcome model that competitors do not offer.
+
+Q: What does your current client onboarding process look like?
+A: There is no formal onboarding process. New clients receive a welcome email and are then contacted by their account lead within a week. There is no onboarding checklist, no formal expectations document, and no structured first 30-day plan.
+
+Q: How do you currently measure and report on results to clients?
+A: Monthly email updates with a short narrative. There is no dashboard, no standardised KPI framework, and reporting quality varies by account lead. Clients frequently request more transparency.

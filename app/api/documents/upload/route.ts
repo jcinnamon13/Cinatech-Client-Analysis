@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
         const allowedTypes = [
             'application/pdf',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'image/jpeg', 'image/png', 'image/webp',
             'text/plain', 'text/csv', 'application/csv',
             // Empty string: some OS/browser combos for .txt
@@ -96,7 +97,8 @@ export async function POST(request: NextRequest) {
                 file_path: storagePath,
                 file_type: fileType,
                 status: 'uploading', // Will change to 'analysing' when passed to AI
-                share_token: shareToken
+                share_token: shareToken,
+                share_expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
             })
             .select('*')
             .single();

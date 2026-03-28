@@ -13,6 +13,7 @@ export interface Client {
     user_id: string;
     name: string;
     created_at: string;
+    is_shared: boolean;
 }
 
 export type DocumentStatus = 'uploading' | 'analysing' | 'ready' | 'error';
@@ -27,6 +28,7 @@ export interface Document {
     file_type: DocumentFileType;
     status: DocumentStatus;
     share_token: string;
+    share_expires_at: string | null;
     created_at: string;
     // Joined
     clients?: Client;
@@ -56,6 +58,29 @@ export interface Analysis {
     structured_result: AnalysisResult;
     summary: string;
     created_at: string;
+}
+
+// ─── Structured Analysis Types ────────────────────────────────────────────────
+
+export interface Pillar {
+    question: string;
+    original_response: string;
+    improved_response: string;
+    recommendations: string[];
+    flags: string[];
+}
+
+export interface ActionItem {
+    action: string;
+    owner: string;
+    deadline: string;
+    pillar: string;
+    consequence: string;
+}
+
+export interface StructuredResult {
+    pillars: Pillar[];
+    priority_action_plan: ActionItem[];
 }
 
 // ─── Export Types ─────────────────────────────────────────────────────────────

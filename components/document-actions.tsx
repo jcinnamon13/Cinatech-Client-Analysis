@@ -25,10 +25,10 @@ interface DocumentActionsProps {
 export function DocumentActions({
     documentId,
     documentName,
-    clientName,
+    clientName: _clientName,
     shareToken,
-    analysisData,
-    summary,
+    analysisData: _analysisData,
+    summary: _summary,
     isReady,
 }: DocumentActionsProps) {
     const [showShareModal, setShowShareModal] = useState(false);
@@ -41,43 +41,22 @@ export function DocumentActions({
 
     // --- PDF Export ---
     const handlePrintExport = () => {
-        window.print();
+        const a = document.createElement('a');
+        a.href = `/api/documents/${documentId}/export?format=pdf`;
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     };
 
-    // --- Copy Rich Text for Google Docs ---
-    const handleCopyRichText = async () => {
-        if (!analysisData) return;
-
-        const lines: string[] = [];
-        lines.push(`# Client Analysis Report — ${clientName}`);
-        lines.push(`**Document:** ${documentName}\n`);
-
-        if (summary) {
-            lines.push(`## Executive Summary\n`);
-            lines.push(summary);
-            lines.push('');
-        }
-
-        lines.push(`## Detailed Analysis\n`);
-        for (const block of analysisData) {
-            lines.push(`### Q: ${block.question}`);
-            lines.push(`**Client's Answer:** ${block.original_response}`);
-            lines.push(`**Strategic Translation:** ${block.improved_response}`);
-            if (block.recommendations.length > 0) {
-                lines.push(`\n**Recommendations:**`);
-                block.recommendations.forEach(r => lines.push(`- ${r}`));
-            }
-            if (block.flags.length > 0) {
-                lines.push(`\n**Areas for Clarification:**`);
-                block.flags.forEach(f => lines.push(`- ⚠️ ${f}`));
-            }
-            lines.push('');
-        }
-
-        const richText = lines.join('\n');
-        await navigator.clipboard.writeText(richText);
-        setCopied('rich');
-        setTimeout(() => setCopied(null), 3000);
+    // --- Docs Export ---
+    const handleDocsExport = () => {
+        const a = document.createElement('a');
+        a.href = `/api/documents/${documentId}/export?format=docx`;
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     };
 
     // --- Copy Share Link ---
@@ -111,7 +90,7 @@ export function DocumentActions({
                 <button
                     onClick={() => setShowShareModal(true)}
                     disabled={!isReady}
-                    className="flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg transition-colors border border-white/10 disabled:opacity-50 disabled:cursor-not-allowed no-print"
+                    className="flex-1 sm:flex-none flex items-center justify-center space-x-2 px-4 py-2 bg-[var(--bg-surface)] hover:bg-[var(--border-subtle)] text-[var(--text-primary)] rounded-lg transition-colors border border-[var(--border-subtle)] disabled:opacity-50 disabled:cursor-not-allowed no-print"
                 >
                     <Share2 className="w-4 h-4" />
                     <span>Share</span>
@@ -121,23 +100,19 @@ export function DocumentActions({
                         onClick={handlePrintExport}
                         disabled={!isReady}
                         title="Export as PDF"
-                        className="flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center justify-center space-x-2 px-4 py-2 bg-[var(--accent-indigo)] hover:bg-[var(--accent-indigo-hover)] text-[var(--text-primary)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         <Download className="w-4 h-4" />
                         <span>PDF</span>
                     </button>
                     <div className="w-px bg-indigo-400/30" />
                     <button
-                        onClick={handleCopyRichText}
-                        disabled={!isReady || !analysisData}
-                        title="Copy as rich text for Google Docs"
-                        className="flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={handleDocsExport}
+                        disabled={!isReady}
+                        title="Download as Word document"
+                        className="flex items-center justify-center space-x-2 px-4 py-2 bg-[var(--accent-indigo)] hover:bg-[var(--accent-indigo-hover)] text-[var(--text-primary)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {copied === 'rich' ? (
-                            <><Check className="w-4 h-4 text-emerald-300" /><span className="text-emerald-300 text-sm">Copied!</span></>
-                        ) : (
-                            <><Copy className="w-4 h-4" /><span className="text-sm">Docs</span></>
-                        )}
+                        <Download className="w-4 h-4" /><span className="text-sm">Docs</span>
                     </button>
                 </div>
             </div>
@@ -149,12 +124,12 @@ export function DocumentActions({
                         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
                         onClick={() => setShowShareModal(false)}
                     />
-                    <div className="relative w-full max-w-md bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl p-6 space-y-5">
+                    <div className="relative w-full max-w-md bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-2xl shadow-2xl p-6 space-y-5">
                         <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-semibold text-white">Share Report</h3>
+                            <h3 className="text-lg font-semibold text-[var(--text-primary)]">Share Report</h3>
                             <button
                                 onClick={() => setShowShareModal(false)}
-                                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-zinc-400"
+                                className="p-1.5 hover:bg-[var(--bg-surface)] rounded-lg transition-colors text-[var(--text-secondary)]"
                             >
                                 <X className="w-4 h-4" />
                             </button>
@@ -162,16 +137,16 @@ export function DocumentActions({
 
                         {/* Share Link */}
                         <div className="space-y-2">
-                            <label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Share Link</label>
+                            <label className="text-xs font-medium text-[var(--text-secondary)] uppercase tracking-wider">Share Link</label>
                             <div className="flex items-center space-x-2">
-                                <div className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-zinc-300 truncate font-mono">
+                                <div className="flex-1 px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg text-sm text-[var(--text-primary)] truncate font-mono">
                                     {`${window.location.origin}/shared/${shareToken || documentId}`}
                                 </div>
                                 <button
                                     onClick={handleCopyLink}
-                                    className="flex-shrink-0 px-3 py-2 bg-white/10 hover:bg-white/15 rounded-lg text-sm text-white transition-colors border border-white/10 flex items-center space-x-1.5"
+                                    className="flex-shrink-0 px-3 py-2 bg-[var(--border-subtle)] hover:bg-white/15 rounded-lg text-sm text-[var(--text-primary)] transition-colors border border-[var(--border-subtle)] flex items-center space-x-1.5"
                                 >
-                                    {copied === 'link' ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                                    {copied === 'link' ? <Check className="w-4 h-4 text-[var(--accent-emerald)]" /> : <Copy className="w-4 h-4" />}
                                     <span>{copied === 'link' ? 'Copied!' : 'Copy'}</span>
                                 </button>
                             </div>
@@ -179,31 +154,31 @@ export function DocumentActions({
 
                         <div className="relative">
                             <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t border-white/10" />
+                                <div className="w-full border-t border-[var(--border-subtle)]" />
                             </div>
-                            <div className="relative flex justify-center text-xs text-zinc-500">
-                                <span className="bg-zinc-900 px-2">or send via email</span>
+                            <div className="relative flex justify-center text-xs text-[var(--text-muted)]">
+                                <span className="bg-[var(--bg-card)] px-2">or send via email</span>
                             </div>
                         </div>
 
                         {/* Email Share */}
                         <div className="space-y-2">
-                            <label className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Email</label>
+                            <label className="text-xs font-medium text-[var(--text-secondary)] uppercase tracking-wider">Email</label>
                             <div className="flex items-center space-x-2">
                                 <input
                                     type="email"
                                     value={emailInput}
                                     onChange={e => setEmailInput(e.target.value)}
                                     placeholder="colleague@example.com"
-                                    className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-zinc-600 outline-none focus:border-indigo-500/70 focus:ring-1 focus:ring-indigo-500/30 transition"
+                                    className="flex-1 px-3 py-2 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-indigo)]/70 focus:ring-1 focus:ring-[var(--accent-indigo)]/30 transition"
                                 />
                                 <button
                                     onClick={handleSendEmail}
                                     disabled={emailStatus === 'sending' || emailStatus === 'sent'}
-                                    className="flex-shrink-0 px-3 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-lg text-sm text-white transition-colors disabled:opacity-60 flex items-center space-x-1.5"
+                                    className="flex-shrink-0 px-3 py-2 bg-[var(--accent-indigo)] hover:bg-[var(--accent-indigo-hover)] rounded-lg text-sm text-[var(--text-primary)] transition-colors disabled:opacity-60 flex items-center space-x-1.5"
                                 >
                                     {emailStatus === 'sending' && <Loader2 className="w-4 h-4 animate-spin" />}
-                                    {emailStatus === 'sent' && <Check className="w-4 h-4 text-emerald-300" />}
+                                    {emailStatus === 'sent' && <Check className="w-4 h-4 text-[var(--accent-emerald)]" />}
                                     {(emailStatus === 'idle' || emailStatus === 'error') && <Mail className="w-4 h-4" />}
                                     <span>
                                         {emailStatus === 'sending' ? 'Sending...' : emailStatus === 'sent' ? 'Sent!' : 'Send'}
@@ -211,7 +186,7 @@ export function DocumentActions({
                                 </button>
                             </div>
                             {emailStatus === 'error' && (
-                                <p className="text-xs text-red-400">Failed to send email. Please try again.</p>
+                                <p className="text-xs text-[var(--accent-red)]">Failed to send email. Please try again.</p>
                             )}
                         </div>
                     </div>

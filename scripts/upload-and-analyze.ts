@@ -47,7 +47,8 @@ async function uploadAndAnalyze() {
             file_path: storagePath,
             file_type: 'pdf',
             status: 'uploading',
-            share_token: uuidv4()
+            share_token: uuidv4(),
+            share_expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
         })
         .select('*')
         .single();

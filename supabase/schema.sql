@@ -53,8 +53,9 @@ create table if not exists documents (
   file_type   text not null check (file_type in ('pdf', 'docx', 'image', 'txt', 'csv')),
   status      text not null default 'uploading'
                 check (status in ('uploading', 'analysing', 'ready', 'error')),
-  share_token uuid not null default uuid_generate_v4() unique,
-  created_at  timestamptz default now() not null
+  share_token      uuid not null default uuid_generate_v4() unique,
+  share_expires_at timestamptz,   -- null = never expires; non-null = link expires at this timestamp
+  created_at       timestamptz default now() not null
 );
 
 -- ─── ANALYSES ────────────────────────────────────────────────────────────────
@@ -160,3 +161,22 @@ create index if not exists idx_documents_user_id   on documents (user_id);
 create index if not exists idx_documents_share     on documents (share_token);
 create index if not exists idx_analyses_document   on analyses  (document_id, version desc);
 create index if not exists idx_exports_document    on exports   (document_id);
+
+-- ============================================================
+-- MIGRATIONS (run on existing databases after initial schema deploy)
+-- ============================================================
+alter table documents
+  add column if not exists share_expires_at timestamptz;
+
+-- ─── SHARE TOKEN CLEANUP ──────────────────────────────────────────────────────
+-- Supabase cron jobs (pg_cron) require a paid plan. Run the query below
+-- manually in the Supabase SQL Editor on a periodic basis (e.g. monthly) to
+-- rotate tokens on expired share links:
+--
+--   update documents
+--   set share_expires_at = null, share_token = uuid_generate_v4()
+--   where share_expires_at is not null and share_expires_at < now();
+--
+-- Or to simply review expired links before acting:
+--   select id, file_name, share_expires_at from documents
+--   where share_expires_at is not null and share_expires_at < now();

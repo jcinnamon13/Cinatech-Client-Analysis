@@ -48,7 +48,7 @@ export function ClientCard({ client }: { client: Client }) {
     if (isDeletingClient) {
         return (
             <div className="glass-card flex items-center justify-center p-10 h-full opacity-50">
-                <div className="animate-pulse text-sm text-slate-400">Deleting {client.name}...</div>
+                <div className="animate-pulse text-sm text-[var(--text-secondary)]">Deleting {client.name}...</div>
             </div>
         );
     }
@@ -61,28 +61,28 @@ export function ClientCard({ client }: { client: Client }) {
                         {client.name.substring(0, 2).toUpperCase()}
                     </div>
                     <div className="min-w-0">
-                        <h3 className="font-semibold text-white text-base truncate" title={client.name}>{client.name}</h3>
-                        <p className="text-xs text-slate-400">Added {formatRelativeDate(client.created_at)}</p>
+                        <h3 className="font-semibold text-[var(--text-primary)] text-base truncate" title={client.name}>{client.name}</h3>
+                        <p className="text-xs text-[var(--text-secondary)]">Added {formatRelativeDate(client.created_at)}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Link href={`/clients/${client.id}`} className="text-xs font-medium text-blue-400 hover:text-blue-300 hover:bg-blue-400/10 px-3 py-1.5 rounded-full transition-colors flex items-center shrink-0">
+                    <Link href={`/clients/${client.id}`} className="text-xs font-medium text-[var(--accent-indigo)] hover:text-[var(--accent-indigo)] hover:bg-indigo-500/10 px-3 py-1.5 rounded-full transition-colors flex items-center shrink-0">
                         View All
                     </Link>
                     <div className="relative">
                         <button
                             onClick={() => setShowMenu(!showMenu)}
-                            className="p-1.5 text-slate-400 hover:text-white rounded-md hover:bg-white/5 transition-colors focus:outline-none"
+                            className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-md hover:bg-white/5 transition-colors focus:outline-none"
                         >
                             <MoreVertical className="w-4 h-4" />
                         </button>
                         {showMenu && (
                             <>
                                 <div className="fixed inset-0 z-10" onClick={() => setShowMenu(false)} />
-                                <div className="absolute right-0 mt-1 w-36 py-1 bg-slate-800 border border-slate-700 rounded-lg shadow-xl z-20">
+                                <div className="absolute right-0 mt-1 w-36 py-1 bg-[var(--bg-card)] border border-[var(--border)] rounded-lg shadow-xl z-20">
                                     <button
                                         onClick={handleDeleteClient}
-                                        className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 transition-colors"
+                                        className="w-full text-left px-4 py-2 text-sm text-[var(--accent-red)] hover:bg-red-500/10 flex items-center gap-2 transition-colors"
                                     >
                                         <Trash2 className="w-3.5 h-3.5" />
                                         Delete Client
@@ -101,8 +101,8 @@ export function ClientCard({ client }: { client: Client }) {
                             <li key={doc.id}>
                                 <div className="flex items-center justify-between p-3 rounded-lg hover:bg-white/[0.03] transition-colors group">
                                     <div className="flex items-center gap-3 overflow-hidden flex-1">
-                                        <File className={`w-5 h-5 shrink-0 ${doc.file_type === 'pdf' ? 'text-red-400' : doc.file_type === 'docx' ? 'text-blue-400' : 'text-emerald-400'}`} />
-                                        <span className="text-sm text-slate-300 truncate font-medium group-hover:text-white transition-colors" title={doc.file_name}>
+                                        <File className={`w-5 h-5 shrink-0 ${doc.file_type === 'pdf' ? 'text-[var(--accent-red)]' : doc.file_type === 'docx' ? 'text-[var(--accent-indigo)]' : 'text-[var(--accent-emerald)]'}`} />
+                                        <span className="text-sm text-[var(--text-secondary)] truncate font-medium group-hover:text-[var(--text-primary)] transition-colors" title={doc.file_name}>
                                             {doc.file_name}
                                         </span>
                                     </div>
@@ -114,12 +114,12 @@ export function ClientCard({ client }: { client: Client }) {
                                             <button
                                                 onClick={() => handleDeleteDocument(doc.id, doc.file_path)}
                                                 disabled={deletingDocId === doc.id}
-                                                className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-md transition-colors disabled:opacity-50"
+                                                className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--accent-red)] hover:bg-red-400/10 rounded-md transition-colors disabled:opacity-50"
                                                 title="Delete Document"
                                             >
                                                 <Trash2 className="w-3.5 h-3.5" />
                                             </button>
-                                            <Link href={`/documents/${doc.id}`} className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 rounded-md transition-colors" title="View Document">
+                                            <Link href={`/documents/${doc.id}`} className="p-1.5 text-[var(--text-secondary)] hover:text-[var(--accent-indigo)] hover:bg-indigo-500/10 rounded-md transition-colors" title="View Document">
                                                 <ChevronRight className="w-4 h-4" />
                                             </Link>
                                         </div>
@@ -129,7 +129,7 @@ export function ClientCard({ client }: { client: Client }) {
                         ))}
                     </ul>
                 ) : (
-                    <div className="p-6 text-center text-sm text-slate-500 h-full flex items-center justify-center">
+                    <div className="p-6 text-center text-sm text-[var(--text-muted)] h-full flex items-center justify-center">
                         No documents yet.
                     </div>
                 )}
@@ -137,7 +137,7 @@ export function ClientCard({ client }: { client: Client }) {
 
             {client.documents && client.documents.length > 3 && (
                 <div className="px-5 py-3 border-t border-[var(--border)] bg-white/[0.01]">
-                    <Link href={`/clients/${client.id}`} className="text-xs text-slate-400 hover:text-white transition-colors flex items-center justify-center">
+                    <Link href={`/clients/${client.id}`} className="text-xs text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center justify-center">
                         + {client.documents.length - 3} more {client.documents.length - 3 === 1 ? 'document' : 'documents'}
                     </Link>
                 </div>
