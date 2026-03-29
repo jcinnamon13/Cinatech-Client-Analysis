@@ -10,7 +10,18 @@ export const metadata: Metadata = {
   title: 'CinaTech: AI-Powered Strategic Analysis for Marketing Agencies',
   description:
     'CinaTech analyses your client\'s onboarding form and produces a full strategic report: competitive gaps, compliance risks, and a ranked action plan in minutes.',
-  keywords: ['client analysis', 'onboarding', 'AI', 'business consulting', 'agency'],
+  keywords: ['client analysis', 'onboarding', 'AI', 'business consulting', 'agency', 'CinaTech'],
+  metadataBase: new URL('https://cinatech.ai'),
+  openGraph: {
+    title: 'CinaTech: AI-Powered Strategic Analysis for Marketing Agencies',
+    description: 'CinaTech analyses your client\'s onboarding form and produces a full strategic report in minutes.',
+    url: 'https://cinatech.ai',
+    siteName: 'CinaTech',
+    type: 'website',
+  },
+  verification: {
+    google: 'M0jgmF58Kk8meJUxl1Get5kWL4HQxVk3f-TnIW4K1a4',
+  },
 };
 
 export default function RootLayout({
