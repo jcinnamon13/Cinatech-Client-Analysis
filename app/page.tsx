@@ -22,12 +22,12 @@ const reportItems = [
     body: 'Sector-specific risks identified before the first campaign goes live.',
   },
   {
-    title: 'Ranked action plan',
-    body: 'A prioritised list of recommendations written specifically for that client.',
-  },
-  {
     title: 'Sector-specific strategic insight',
     body: 'Context drawn from the client\'s exact industry, not generic advice.',
+  },
+  {
+    title: 'Ranked action plan',
+    body: 'A prioritised list of recommendations written specifically for that client.',
   },
 ];
 
