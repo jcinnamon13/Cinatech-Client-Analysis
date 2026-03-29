@@ -836,9 +836,9 @@ body:has(.landing-nav) button {
 }
 
 .pdf-modal-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
   background: none;
   border: none;
   color: var(--lp-text-primary);
@@ -848,7 +848,7 @@ body:has(.landing-nav) button {
   cursor: pointer;
   padding: 4px 8px;
   transition: color 0.2s ease;
-  z-index: 10;
+  z-index: 10000;
 }
 
 .pdf-modal-close:hover {
