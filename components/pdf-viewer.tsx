@@ -10,7 +10,7 @@ const pageVariants = {
   exit: (dir: number) => ({ x: dir > 0 ? -60 : 60, opacity: 0 }),
 };
 
-const pageTransition = { duration: 0.35, ease: [0.16, 1, 0.3, 1] as const };
+const pageTransition = { duration: 0.15, ease: [0.16, 1, 0.3, 1] as const };
 
 export default function PdfViewer() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +21,9 @@ export default function PdfViewer() {
   const [workerReady, setWorkerReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { console.log('modal mounted'); }, []);
+  useEffect(() => { console.log('page changed', currentPage); }, [currentPage]);
 
   // Measure container width responsively
   useEffect(() => {
@@ -100,11 +103,11 @@ export default function PdfViewer() {
       </div>
 
       {/* ── FULL-SCREEN MODAL ───────────────────────────────── */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {modalOpen && (
           <motion.div
             className="pdf-modal-overlay"
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
@@ -130,7 +133,7 @@ export default function PdfViewer() {
               {/* PDF viewer */}
               <div className="pdf-viewer-wrapper" ref={containerRef}>
                 <div className="pdf-viewer-stage">
-                  <AnimatePresence mode="wait" custom={direction}>
+                  <AnimatePresence custom={direction}>
                     <motion.div
                       key={currentPage}
                       custom={direction}

@@ -823,7 +823,6 @@ body:has(.landing-nav) button {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  overflow: hidden;
 }
 
 .pdf-modal-inner {
@@ -838,8 +837,8 @@ body:has(.landing-nav) button {
 
 .pdf-modal-close {
   position: absolute;
-  top: -48px;
-  right: 0;
+  top: 12px;
+  right: 12px;
   background: none;
   border: none;
   color: var(--lp-text-primary);
@@ -869,7 +868,6 @@ body:has(.landing-nav) button {
   }
 
   .pdf-modal-close {
-    top: -40px;
     font-size: 26px;
   }
 }
