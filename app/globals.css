@@ -836,9 +836,9 @@ body:has(.landing-nav) button {
 }
 
 .pdf-modal-close {
-  position: fixed;
-  top: 16px;
-  right: 16px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
   background: none;
   border: none;
   color: var(--lp-text-primary);
@@ -848,7 +848,7 @@ body:has(.landing-nav) button {
   cursor: pointer;
   padding: 4px 8px;
   transition: color 0.2s ease;
-  z-index: 10000;
+  z-index: 10;
 }
 
 .pdf-modal-close:hover {
@@ -867,8 +867,15 @@ body:has(.landing-nav) button {
     align-items: flex-start;
   }
 
+  .pdf-modal-inner {
+    padding-top: 48px;
+  }
+
   .pdf-modal-close {
-    font-size: 26px;
+    font-size: 32px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
   }
 }
 

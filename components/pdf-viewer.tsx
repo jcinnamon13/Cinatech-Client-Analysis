@@ -113,15 +113,6 @@ export default function PdfViewer() {
             transition={{ duration: 0.2, ease: 'easeOut' }}
             onClick={handleOverlayClick}
           >
-            {/* Close button */}
-            <button
-              className="pdf-modal-close"
-              onClick={() => setModalOpen(false)}
-              aria-label="Close"
-            >
-              ✕
-            </button>
-
             <motion.div
               className="pdf-modal-inner"
               initial={{ opacity: 0, y: 24 }}
@@ -130,6 +121,15 @@ export default function PdfViewer() {
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] as const }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Close button */}
+              <button
+                className="pdf-modal-close"
+                onClick={() => setModalOpen(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+
               {/* PDF viewer */}
               <div className="pdf-viewer-wrapper" ref={containerRef}>
                 <div className="pdf-viewer-stage">
