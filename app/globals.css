@@ -590,6 +590,14 @@ body:has(.landing-nav) button {
   }
 }
 
+@media (max-width: 480px) {
+  .landing-nav .landing-btn-primary {
+    padding: 6px 8px;
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+}
+
 .landing-btn-primary {
   display: inline-flex;
   align-items: center;

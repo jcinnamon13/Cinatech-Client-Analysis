@@ -32,12 +32,9 @@ export default function PdfViewer() {
     return () => observer.disconnect();
   }, []);
 
-  // Initialise pdfjs worker after mount so import.meta.url is fully resolved
+  // Initialise pdfjs worker after mount
   useEffect(() => {
-    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-      'pdfjs-dist/build/pdf.worker.min.mjs',
-      import.meta.url,
-    ).toString();
+    pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
     setWorkerReady(true);
   }, []);
 
@@ -198,13 +195,23 @@ export default function PdfViewer() {
                   >
                     →
                   </button>
-                  <a
-                    href="/Crestwell_growth_partners_analysis_case_study.pdf"
-                    download="Crestwell_Growth_Partners_Analysis.pdf"
+                  <button
                     className="pdf-viewer-download-btn"
+                    onClick={() => {
+                      const url = '/Crestwell_growth_partners_analysis_case_study.pdf';
+                      const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+                      if (isMobile) {
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      } else {
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'Crestwell_Growth_Partners_Analysis.pdf';
+                        a.click();
+                      }
+                    }}
                   >
                     Download PDF
-                  </a>
+                  </button>
                 </div>
               </div>
 
