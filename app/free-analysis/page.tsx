@@ -164,7 +164,6 @@ export default function FreeAnalysis() {
                 <p className="lp-fa-step-body">Don&apos;t have an existing document? Download our template in your preferred format. It contains the exact fields our AI engine requires.</p>
                 <div className="lp-fa-dl-row">
                   <a href="/CinaTech_Client_Onboarding_Template.docx" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.DOCX</a>
-                  <a href="/CinaTech_Client_Onboarding_Template.csv" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.CSV</a>
                   <a href="/CinaTech_Client_Onboarding_Template.xlsx" download className="landing-btn-primary" style={{ padding: '8px 16px', fontSize: '12px' }}>.XLSX</a>
                 </div>
               </div>
