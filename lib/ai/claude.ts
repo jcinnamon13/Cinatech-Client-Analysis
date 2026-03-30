@@ -48,6 +48,7 @@ const MetadataSchema = z.object({
 
 const anthropic = new Anthropic({
     apiKey: process.env.ANTHROPIC_API_KEY,
+    timeout: 600_000, // bypass SDK streaming check for adaptive thinking with max_tokens > 21,333
 });
 
 export async function analyseDocument(textStructure: string, imageDataUri?: string) {
