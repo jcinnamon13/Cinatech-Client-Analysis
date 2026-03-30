@@ -80,7 +80,7 @@ export async function analyseDocument(textStructure: string, imageDataUri?: stri
 
         const response = await anthropic.messages.parse({
             model: 'claude-opus-4-6',
-            max_tokens: 20000,
+            max_tokens: 24000,
             thinking: { type: 'adaptive' },
             system: [
                 {

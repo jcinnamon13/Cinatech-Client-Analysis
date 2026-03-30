@@ -106,17 +106,21 @@ Every analysis must assess the client across the following dimensions, creating 
 If any pillar is absent without a documented data gap justification, the analysis is incomplete.
 
 ────────────────────────────────────────────────────────────────
-PILLAR 7 — MANDATORY REVENUE QUALITY FLAGS
+PILLAR 3 — MANDATORY CHANNEL CONCENTRATION RISK FLAG
 ────────────────────────────────────────────────────────────────
-When analysing the Revenue Model and Growth Trajectory pillar, you must assess the following four metrics where the document permits inference. Where data is insufficient to assess a metric, explicitly state the data gap - absence of data is itself a finding and must not be skipped silently. These observations belong in the flags array for Pillar 7. Each is a separate flag entry.
+When analysing the Client Acquisition and Growth Engine pillar, apply the following channel concentration risk assessment. The flag is triggered when the document signals that a single platform or channel accounts for the majority of the client's lead generation or revenue acquisition activity.
 
-1. NRR SIGNAL: Assess whether the client's model compounds revenue from existing customers over time through expansion, upsells, or tier upgrades - or whether it flatlines at acquisition with no expansion mechanism. If there is no mechanism for revenue to grow from the existing customer base, flag NRR as structurally below 100%, name this a treadmill risk (the business must continuously acquire new clients simply to maintain current revenue), and state the commercial consequence: without an NRR improvement lever, growth requires perpetual new-client acquisition at full cost.
+Trigger signals include: a single channel described as the primary or dominant source of leads; all paid activity running on one platform; organic traffic described as predominantly from one source; or outbound described as running exclusively through one platform. The threshold is any single channel or platform appearing to drive more than 50% of acquisition activity.
 
-2. CAC:LTV INFERENCE: Even rough inference is required. If the document signals high acquisition cost or spend (paid advertising, outbound agency fees, high sales cycle complexity) alongside signals of high churn risk, short average engagement duration, or low per-client revenue, flag the ratio as structurally problematic. Name the specific consequence: if the cost to acquire a client approaches or exceeds the lifetime revenue that client generates, the business model does not compound.
+When triggered, the flag must:
+- Name the concentrated channel or platform explicitly
+- State that platform algorithm changes, policy updates, ad account suspensions, or channel saturation represent a structural single point of failure in the acquisition engine
+- Quantify the consequence where possible: if this channel were disrupted, state what percentage of lead flow would be at risk
+- Recommend channel diversification with a named second channel appropriate to the client's vertical and customer profile as a specific action
 
-3. REVENUE CONCENTRATION: Hard rule - if any signal in the document suggests that a single client, client type, or channel accounts for more than 25-30% of revenue or lead flow, this must be flagged as a critical structural risk. State the explicit consequence: loss of that client or channel is not a setback - it is a potential existential event that could make the business unviable at its current cost structure.
+Placement: this flag belongs in the flags (Areas for Clarification) slot for Pillar 3. If the concentration level is severe enough to warrant elevation into a recommendation, it should replace the less commercially critical of the two existing recommendations.
 
-4. GROSS MARGIN BY SERVICE LINE: If pricing data, cost data, or service mix information is available in the document, assess whether the client's highest-volume service is also their highest-margin service. If the highest-volume service carries the lowest margin, flag this as a margin and strategic priority problem: the business is optimising its delivery capacity and sales effort for its least profitable work.
+If the document does not contain sufficient channel data to assess concentration, state this as a data gap explicitly. Do not skip this assessment silently.
 
 ────────────────────────────────────────────────────────────────
 PILLAR 4 — FOUNDER/KEY PERSON DEPENDENCY ASSESSMENT
@@ -130,6 +134,36 @@ When one or more of these signals are present, the Pillar 4 analysis must:
 - Recommend delegation, systemisation, or role separation as a precondition for the growth recommendations in this report to be executable - not optional enhancements, but structural prerequisites
 
 When none of these signals are present in the document, skip this assessment silently. Do not add a generic note about delegation.
+
+────────────────────────────────────────────────────────────────
+PILLAR 6 — MANDATORY PRICING ARCHITECTURE ASSESSMENT
+────────────────────────────────────────────────────────────────
+When analysing the Service Delivery Model and Scalability pillar, assess the client's pricing architecture across the following four dimensions wherever the onboarding document contains any signals about how the client prices their product or service. These findings must be woven into the existing improved_response, recommendations, and flags slots for Pillar 6. They are not a separate output block. Word limits for those slots are unchanged.
+
+Where the document contains insufficient pricing data to assess a dimension, explicitly state the data gap as a finding. Do not skip any dimension silently - absence of pricing transparency is itself a flag worth stating.
+
+1. PRICING MODEL DIAGNOSIS: Identify which pricing model the client is using, often implicitly: value-based (price set by perceived outcome delivered), cost-plus (price set by cost of delivery plus margin), or competitive (price set relative to competitors). Flag where the model in use is misaligned with the client's market positioning. Specifically: a premium-positioned or differentiated business using cost-plus pricing is undermining its own positioning and leaving margin on the table. State this misalignment explicitly with commercial consequence.
+
+2. GOOD-BETTER-BEST ARCHITECTURE: Evaluate whether the client's pricing is tiered in a way that anchors customer perception and creates a natural path to the highest-value option. Flag the absence of tiering as a conversion and upsell problem. Flag where the cheapest option is presented first or most prominently, as this anchors customer expectation downward and suppresses average transaction value.
+
+3. PRICE ANCHORING: Assess whether the pricing structure uses anchoring effectively. If there is a single price point with no comparison, flag the absence of anchoring as a missed conversion lever.
+
+4. VAN WESTENDORP INFERENCE: Even without primary customer research, infer the acceptable price range signals from what the document reveals about customer profile, deal size, competitive context, and the outcome being purchased. Flag where pricing appears to sit significantly below the ceiling the market would likely accept based on these signals.
+
+────────────────────────────────────────────────────────────────
+PILLAR 7 — MANDATORY REVENUE QUALITY FLAGS
+────────────────────────────────────────────────────────────────
+When analysing the Revenue Model and Growth Trajectory pillar, you must assess the following four metrics where the document permits inference. Where data is insufficient to assess a metric, explicitly state the data gap - absence of data is itself a finding and must not be skipped silently. These observations belong in the flags array for Pillar 7. Each is a separate flag entry.
+
+1. NRR SIGNAL: Assess whether the client's model compounds revenue from existing customers over time through expansion, upsells, or tier upgrades - or whether it flatlines at acquisition with no expansion mechanism. If there is no mechanism for revenue to grow from the existing customer base, flag NRR as structurally below 100%, name this a treadmill risk (the business must continuously acquire new clients simply to maintain current revenue), and state the commercial consequence: without an NRR improvement lever, growth requires perpetual new-client acquisition at full cost.
+
+2. CAC:LTV INFERENCE: Even rough inference is required. If the document signals high acquisition cost or spend (paid advertising, outbound agency fees, high sales cycle complexity) alongside signals of high churn risk, short average engagement duration, or low per-client revenue, flag the ratio as structurally problematic. Name the specific consequence: if the cost to acquire a client approaches or exceeds the lifetime revenue that client generates, the business model does not compound.
+
+3. REVENUE CONCENTRATION: Hard rule - if any signal in the document suggests that a single client, client type, or channel accounts for more than 25-30% of revenue or lead flow, this must be flagged as a critical structural risk. State the explicit consequence: loss of that client or channel is not a setback - it is a potential existential event that could make the business unviable at its current cost structure.
+
+4. GROSS MARGIN BY SERVICE LINE: If pricing data, cost data, or service mix information is available in the document, assess whether the client's highest-volume service is also their highest-margin service. If the highest-volume service carries the lowest margin, flag this as a margin and strategic priority problem: the business is optimising its delivery capacity and sales effort for its least profitable work.
+
+5. CAC PAYBACK PERIOD: Calculate or infer the CAC Payback Period, defined as CAC divided by average monthly gross margin per client. This measures how many months the business must retain a client before the cost of acquiring them is fully recovered. This is a cash flow and growth sustainability metric, distinct from CAC:LTV which is a profitability metric. Flag a payback period exceeding 6 months as a cash flow risk and state the consequence explicitly: a business growing rapidly with a payback period above 6 months is cash-flow negative on every new client for an extended period, and at scale this becomes a working capital constraint that profitability improvements alone cannot solve. Flag a payback period exceeding 12 months as a critical structural risk requiring immediate attention before acquisition is accelerated. Where gross margin data is unavailable, calculate against revenue per client as a proxy and note the limitation explicitly. Where no relevant figures are available, state the data gap explicitly. Absence of data is a finding and must not be skipped silently.
 
 ────────────────────────────────────────────────────────────────
 TACTICAL SPECIFICITY STANDARD
