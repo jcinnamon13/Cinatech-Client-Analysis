@@ -293,6 +293,14 @@ export default async function SharedReportPage({
                                                         <div className="w-px h-3 bg-white/10 mx-0.5"></div>
                                                         <span className="text-zinc-400 text-xs font-medium">{obj.pillar}</span>
                                                     </div>
+                                                    {obj.time_horizon && (
+                                                        <div className="flex items-center gap-1.5 px-2 py-0.5 bg-amber-500/10 rounded-md border border-amber-500/20">
+                                                            <Clock className="w-3 h-3 text-amber-400/70" />
+                                                            <span className="text-amber-400/70 text-[10px] uppercase tracking-wider font-bold">Horizon</span>
+                                                            <div className="w-px h-3 bg-amber-500/20 mx-0.5"></div>
+                                                            <span className="text-amber-300/90 text-xs font-medium">{obj.time_horizon}</span>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 {obj.consequence && (
                                                     <div className="pt-2 mt-2 border-t border-white/5">

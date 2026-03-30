@@ -1,0 +1,130 @@
+CLIENT ONBOARDING DOCUMENT
+CinaTech Agency Intelligence Platform
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 1: BUSINESS OVERVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Company Name: Apex Chiropractic & Wellness
+Contact Name: Dr. James Hartley
+Job Title: Founder and Principal Chiropractor
+Business Type: Sole trader / single-director practice
+Location: Austin, Texas, USA
+Website: apexchiropractictx.com
+Years in Operation: 4 years
+Number of Staff: 1 (myself) — I handle all client relationships, consultations, bookings, and social media personally. I am looking to hire a reception assistant in the next 6 months.
+
+Business Summary:
+I run a boutique chiropractic practice in Austin focused on working professionals aged 28-50 who experience chronic lower back and neck pain from desk work. My core offer is a 12-session treatment programme priced at $1,800 per client. I also offer single sessions at $120. My average client completes 8 sessions before stopping. I see approximately 18-22 active clients per month. Around 70% of my new clients come from referrals from two local GP practices. The remaining 30% come from Google search.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 2: GOALS AND OBJECTIVES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Primary Goal:
+I want to grow my monthly revenue from approximately $22,000/month to $40,000/month within 12 months. I want to attract more clients without becoming more dependent on the two GP referral relationships, which feel fragile.
+
+Secondary Goals:
+- Build a recognisable personal brand in Austin as the go-to chiropractor for tech workers and office professionals
+- Launch a corporate wellness contract with at least one Austin tech company by end of year
+- Start collecting video testimonials from satisfied clients
+
+Current Marketing Activities:
+- Google Business Profile (active, 47 reviews, 4.8 stars)
+- Instagram (@apexchiro_austin) — I post 2-3 times per week, mostly educational content about posture and ergonomics. Around 1,100 followers. No paid ads.
+- Email list of 340 subscribers — I send a monthly newsletter but have not used it for promotions
+- No Facebook, no LinkedIn, no paid advertising of any kind
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 3: TARGET MARKET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Ideal Client Profile:
+My ideal clients are working professionals aged 28-45 in desk-based roles — software engineers, project managers, lawyers, and finance professionals. They typically present with chronic lower back pain or neck pain that has been affecting their productivity and sleep for 6-18 months. They have tried generic advice (stretching, standing desks) without sustained relief. They want a structured, expert-led solution, not a gym membership or generic physiotherapy.
+
+What my clients are trying to achieve:
+They want to get through a full working day without pain so they can perform at their job, be present at home, and stop worrying about whether their body is going to get worse. Most are not athletic — they are not trying to run a marathon. They want functional normality.
+
+What makes them choose me over other chiropractors:
+- I specialise in desk worker injuries specifically, which resonates immediately with this audience
+- I explain the biomechanical cause of their problem in detail before treating — most competitors just treat without explaining
+- I offer a structured 12-session programme with clear progress milestones rather than open-ended repeat visits
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 4: COMPETITIVE LANDSCAPE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Main Competitors:
+1. Austin Spine & Rehab — large multi-practitioner clinic, well-funded, heavy Google Ads presence, but generic messaging
+2. Keep Austin Aligned — another solo practitioner, lower prices ($85/session), no structured programme, mostly sports injuries
+3. Wellness Works Austin — physiotherapy and chiro hybrid, corporate-focused, has contracts with 3 tech companies
+
+What I do better than all of them:
+I am the only chiropractor in Austin who has built an entire positioning and content strategy around desk workers specifically. My educational Instagram content uses the exact language my clients use to describe their pain — "posture prison", "laptop neck" — which creates immediate recognition that I understand their specific problem.
+
+Pricing vs competitors:
+My 12-session programme at $1,800 is priced at the premium end. Single sessions at $120 are mid-market. I do not discount.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 5: CURRENT REVENUE AND BUSINESS MODEL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Monthly Revenue Breakdown:
+- 12-session programmes: approximately $14,000/month (8 active programme clients × $1,800 / avg 10 months)
+- Single sessions: approximately $7,200/month (60 sessions × $120)
+- Total: approximately $21,200/month
+
+Revenue Concentration Risk:
+The two GP referral relationships account for approximately 70% of my new client volume each month. If either GP practice changed their referral behaviour or referred to a competitor, I estimate I would lose 50-60% of my new client pipeline immediately.
+
+Growth Guarantee:
+I am considering offering a results guarantee — something like "if you complete all 12 sessions and do not experience a measurable reduction in pain, I will provide 4 additional sessions free of charge." I have not launched this yet. I want advice on whether to proceed.
+
+Costs:
+My main costs are clinic rent ($2,800/month), equipment maintenance, and professional liability insurance. No paid advertising spend currently. No staff costs yet.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 6: ONBOARDING AND DELIVERY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Current client onboarding process:
+1. New client contacts me via website form or phone
+2. I call them back personally within 24 hours (always me — I have no front desk staff)
+3. I conduct a 15-minute discovery call to assess fit
+4. I send a manual email confirmation with intake forms attached as PDFs
+5. First appointment — I conduct a full assessment (45 min) and recommend a programme or single sessions
+
+Biggest operational challenges:
+- I am the single point of contact for every client at every stage. When I am in clinic seeing clients, I cannot respond to enquiries, which means some leads go cold.
+- I have no CRM. I track client progress in a paper notes system and a basic spreadsheet.
+- I have no automated follow-up after a client completes their programme. If they relapse 6 months later, there is nothing in place to bring them back.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 7: EXISTING PROOF AND TRUST ASSETS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+What social proof do you currently have?
+- 47 Google reviews (4.8 stars) — mostly generic ("great chiropractor, very professional")
+- 3 written testimonials on my website — none include specific outcomes or pain reduction metrics
+- No video testimonials
+- No before/after case studies with documented progress data
+- No media coverage or PR
+
+What results have you achieved for clients that you could document?
+Several clients have told me verbally that they went from daily pain to near-zero pain within 8 sessions. One client, a software engineer, told me she was able to return to 10-hour workdays without pain for the first time in 2 years. I have not documented these as case studies.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECTION 8: ADDITIONAL CONTEXT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Why are you engaging a marketing agency now?
+I have hit a ceiling I cannot break through on my own. I am operating at close to full capacity for a solo practitioner, but I am not generating enough revenue to justify hiring. I feel stuck — I need more revenue to hire, but I need to hire to generate more revenue. I think the answer is better marketing and positioning, but I do not know where to start.
+
+What does success look like in 12 months?
+$40,000/month revenue, at least one corporate wellness contract, less dependence on the two GP referral relationships, and a waiting list of at least 2 weeks for new programme clients.
+
+Budget for marketing:
+I am prepared to invest $2,000-$3,000/month in marketing once I understand what the strategy is. I have not spent anything on marketing to date beyond my own time.
+
+Any other information:
+I am the face of the business. My personal credibility and expertise are the brand. I am concerned that any marketing activity that does not reflect this — generic ads, low-quality content, discount-led promotions — will damage rather than build the brand I have spent 4 years creating.

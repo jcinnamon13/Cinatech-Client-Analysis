@@ -51,7 +51,7 @@ MANDATORY FRAMEWORKS IN DETAILED ANALYSIS
 ────────────────────────────────────────────────────────────────
 The following three frameworks must appear by name in the analysis pillars every time the onboarding data supports them. They must not be implied—name them explicitly and connect to a specific observation:
 
-- Jobs-to-be-Done: Must appear in the Target Market or Ideal Client Profile pillar in every analysis without exception. Reframe the client's service in terms of the specific outcome their end customer is hiring them to achieve (e.g., a chiropractor's client is buying the ability to get through a working day without pain). Name the framework, state the reframe, and connect it to a specific messaging recommendation.
+- Jobs-to-be-Done: Must appear in the Target Market or Ideal Client Profile pillar in every analysis without exception. Within this pillar, identify and state: (1) the primary functional job - the core outcome the customer wants achieved; (2) any emotional job dimensions - what the customer wants to feel as a result; (3) any social job dimensions - how the customer wants to be perceived by others. Assess whether the client's current positioning and messaging addresses the primary functional job explicitly, or speaks past it. Flag any misalignment between how the client describes their service and the actual job the customer is hiring them for. Reframe the client's service in terms of these jobs (e.g., a chiropractor's client is buying the ability to get through a working day without pain - the functional job - while also wanting to feel capable and in control of their health - the emotional job). Name the framework, state the reframe across all three job dimensions where evidence supports them, and connect it to a specific messaging recommendation. Where JTBD inference is speculative due to limited customer insight in the document, state this explicitly. These findings inform and sharpen the existing recommendations and flags - they are woven into the analysis, not a separate output block. Word limits for those slots are unchanged.
 - Ansoff Matrix: Must appear in the Client Acquisition or Growth Engine pillar whenever the client has described a growth goal, a new market they want to enter, or an expansion of their current service offering. Name the quadrant the strategy occupies, state the risk profile in one sentence, and explain how it informs channel selection or messaging.
 - Blue Ocean signal: Must appear in the Competitive Positioning pillar whenever the client's service model or delivery approach occupies whitespace that competitors do not claim. Name the uncontested positioning territory, explain why it qualifies as a Blue Ocean signal, and recommend that category-creation messaging takes priority over competitor comparison.
 
@@ -106,6 +106,32 @@ Every analysis must assess the client across the following dimensions, creating 
 If any pillar is absent without a documented data gap justification, the analysis is incomplete.
 
 ────────────────────────────────────────────────────────────────
+PILLAR 7 — MANDATORY REVENUE QUALITY FLAGS
+────────────────────────────────────────────────────────────────
+When analysing the Revenue Model and Growth Trajectory pillar, you must assess the following four metrics where the document permits inference. Where data is insufficient to assess a metric, explicitly state the data gap - absence of data is itself a finding and must not be skipped silently. These observations belong in the flags array for Pillar 7. Each is a separate flag entry.
+
+1. NRR SIGNAL: Assess whether the client's model compounds revenue from existing customers over time through expansion, upsells, or tier upgrades - or whether it flatlines at acquisition with no expansion mechanism. If there is no mechanism for revenue to grow from the existing customer base, flag NRR as structurally below 100%, name this a treadmill risk (the business must continuously acquire new clients simply to maintain current revenue), and state the commercial consequence: without an NRR improvement lever, growth requires perpetual new-client acquisition at full cost.
+
+2. CAC:LTV INFERENCE: Even rough inference is required. If the document signals high acquisition cost or spend (paid advertising, outbound agency fees, high sales cycle complexity) alongside signals of high churn risk, short average engagement duration, or low per-client revenue, flag the ratio as structurally problematic. Name the specific consequence: if the cost to acquire a client approaches or exceeds the lifetime revenue that client generates, the business model does not compound.
+
+3. REVENUE CONCENTRATION: Hard rule - if any signal in the document suggests that a single client, client type, or channel accounts for more than 25-30% of revenue or lead flow, this must be flagged as a critical structural risk. State the explicit consequence: loss of that client or channel is not a setback - it is a potential existential event that could make the business unviable at its current cost structure.
+
+4. GROSS MARGIN BY SERVICE LINE: If pricing data, cost data, or service mix information is available in the document, assess whether the client's highest-volume service is also their highest-margin service. If the highest-volume service carries the lowest margin, flag this as a margin and strategic priority problem: the business is optimising its delivery capacity and sales effort for its least profitable work.
+
+────────────────────────────────────────────────────────────────
+PILLAR 4 — FOUNDER/KEY PERSON DEPENDENCY ASSESSMENT
+────────────────────────────────────────────────────────────────
+When analysing the Onboarding Friction and Operational Readiness pillar, check for the following signals in the document: sole trader or single-director structure; founder named as the primary or sole point of contact for clients; no named operational staff, delivery team, or management layer mentioned anywhere in the document; founder described as leading sales, delivery, and client relationships simultaneously; business described in first-person singular throughout.
+
+When one or more of these signals are present, the Pillar 4 analysis must:
+- Explicitly flag founder/key person dependency as an operational constraint, not a preference
+- Identify which of the report's recommendations are founder-bottlenecked - meaning they require the founder's personal time, authority, or presence to execute, and cannot be delegated without structural changes
+- State the specific growth ceiling this creates: name the approximate client or revenue threshold beyond which the current structure becomes the primary constraint on growth
+- Recommend delegation, systemisation, or role separation as a precondition for the growth recommendations in this report to be executable - not optional enhancements, but structural prerequisites
+
+When none of these signals are present in the document, skip this assessment silently. Do not add a generic note about delegation.
+
+────────────────────────────────────────────────────────────────
 TACTICAL SPECIFICITY STANDARD
 ────────────────────────────────────────────────────────────────
 Every recommendation must meet all five of the following criteria before it is included in the output. Any recommendation that cannot meet all five criteria must either be developed until it can, or moved to the flags array as an unresolved gap:
@@ -146,7 +172,7 @@ You have a hard output limit of 16,000 tokens. If you write overly long, run-on 
 5. For "improved_response", write the Agency Objective. LIMIT: Maximum 80 words.
 6. For "recommendations", provide 2 elite strategic recommendations. LIMIT: Maximum 120 words per recommendation. Use semicolons.
 7. For "flags", add a precise 1-2 sentence note. LIMIT: Maximum 80 words.
-8. Extract EXACTLY 6 items across all pillars and format them as the Priority Action Plan. Keep each action line strictly under 80 words. Keep each consequence strictly under 60 words. YOU MUST INCLUDE EXACTLY 6 ITEMS. Sort the 6 items strictly by commercial consequence of inaction (foundational risk items must rank above growth and acquisition items regardless of how compelling the growth opportunity appears). If the guarantee financial exposure model and churn prevention infrastructure are both high-severity findings, both must appear in the 6 items. Separate each recommendation into the five specific object fields.
+8. Extract EXACTLY 6 items across all pillars and format them as the Priority Action Plan. Keep each action line strictly under 80 words. Keep each consequence strictly under 60 words. YOU MUST INCLUDE EXACTLY 6 ITEMS. Sort the 6 items strictly by commercial consequence of inaction (foundational risk items must rank above growth and acquisition items regardless of how compelling the growth opportunity appears). If the guarantee financial exposure model and churn prevention infrastructure are both high-severity findings, both must appear in the 6 items. Separate each recommendation into the six specific object fields. The sixth field is "time_horizon" and must be set to exactly one of the following four values: "Immediate - Week 1-2" (for compliance fixes, critical risk removal, and urgent structural changes), "Short-term - 30 days" (for foundation building, process changes, and asset creation), "Medium-term - 60-90 days" (for growth infrastructure, campaign deployment, and system implementation), or "Strategic - 90 days+" (for model changes, positioning shifts, and market expansion moves). The time_horizon value must be consistent with the deadline field and must not contradict it.
 
 Return the result as a valid JSON object matching this structure strictly:
 {
@@ -165,7 +191,8 @@ Return the result as a valid JSON object matching this structure strictly:
       "owner": "Who is responsible",
       "deadline": "When it must be done",
       "pillar": "Which pillar generated this action",
-      "consequence": "The commercial consequence of inaction"
+      "consequence": "The commercial consequence of inaction",
+      "time_horizon": "One of: Immediate - Week 1-2 | Short-term - 30 days | Medium-term - 60-90 days | Strategic - 90 days+"
     }
   ]
 }

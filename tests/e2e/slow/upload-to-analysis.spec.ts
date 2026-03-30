@@ -98,6 +98,7 @@ test.describe('Upload → Analysis pipeline', () => {
                 deadline: string;
                 pillar: string;
                 consequence: string;
+                time_horizon: string;
             }[];
         };
 
@@ -125,6 +126,10 @@ test.describe('Upload → Analysis pipeline', () => {
             expect(typeof item.deadline).toBe('string');
             expect(typeof item.pillar).toBe('string');
             expect(typeof item.consequence).toBe('string');
+            expect(typeof item.time_horizon).toBe('string');
+            expect(item.time_horizon.length).toBeGreaterThan(0);
+            const validHorizons = ['Immediate', 'Short-term', 'Medium-term', 'Strategic'];
+            expect(validHorizons.some(h => item.time_horizon.includes(h))).toBe(true);
         }
     });
 });

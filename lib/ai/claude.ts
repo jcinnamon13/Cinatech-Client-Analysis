@@ -24,6 +24,7 @@ const PriorityActionSchema = z.object({
     deadline: z.string(),
     pillar: z.string(),
     consequence: z.string(),
+    time_horizon: z.string(),
 });
 
 const AnalysisOutputSchema = z.object({
@@ -79,7 +80,7 @@ export async function analyseDocument(textStructure: string, imageDataUri?: stri
 
         const response = await anthropic.messages.parse({
             model: 'claude-opus-4-6',
-            max_tokens: 16000,
+            max_tokens: 20000,
             thinking: { type: 'adaptive' },
             system: [
                 {

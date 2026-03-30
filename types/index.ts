@@ -76,6 +76,7 @@ export interface ActionItem {
     deadline: string;
     pillar: string;
     consequence: string;
+    time_horizon: string;
 }
 
 export interface StructuredResult {
