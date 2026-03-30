@@ -85,6 +85,12 @@ test.describe('Upload → Analysis pipeline', () => {
         expect(analysis?.structured_result).toBeTruthy();
 
         const result = analysis!.structured_result as {
+            growth_stage_assessment: {
+                classified_stage: string;
+                signals: string[];
+                crisis_status: string;
+                calibration_statement: string;
+            };
             pillars: {
                 question: string;
                 original_response: string;
@@ -103,6 +109,15 @@ test.describe('Upload → Analysis pipeline', () => {
         };
 
         // Top-level shape
+        expect(result.growth_stage_assessment).toBeTruthy();
+        expect(typeof result.growth_stage_assessment.classified_stage).toBe('string');
+        expect(result.growth_stage_assessment.classified_stage.length).toBeGreaterThan(0);
+        expect(Array.isArray(result.growth_stage_assessment.signals)).toBe(true);
+        expect(result.growth_stage_assessment.signals.length).toBeGreaterThan(0);
+        expect(typeof result.growth_stage_assessment.crisis_status).toBe('string');
+        expect(result.growth_stage_assessment.crisis_status.length).toBeGreaterThan(0);
+        expect(typeof result.growth_stage_assessment.calibration_statement).toBe('string');
+        expect(result.growth_stage_assessment.calibration_statement.length).toBeGreaterThan(0);
         expect(Array.isArray(result.pillars)).toBe(true);
         expect(result.pillars.length).toBeGreaterThan(0);
         expect(Array.isArray(result.priority_action_plan)).toBe(true);

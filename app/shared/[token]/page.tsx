@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
-import { FileText, Sparkles, CheckCircle2, AlertTriangle, MessageSquare, User, Clock, Target } from 'lucide-react';
+import { FileText, Sparkles, CheckCircle2, AlertTriangle, MessageSquare, User, Clock, Target, TrendingUp } from 'lucide-react';
 import { cleanSummary } from '@/lib/utils';
 
 interface AnalysisBlock {
@@ -68,6 +68,7 @@ export default async function SharedReportPage({
     // Defensively parse structured_result
     let results: AnalysisBlock[] = [];
     let priorityPlan: any[] | null = null;
+    let growthStageAssessment: { classified_stage: string; signals: string[]; crisis_status: string; calibration_statement: string } | null = null;
 
     if (analysis?.structured_result) {
         let raw = analysis.structured_result;
@@ -80,6 +81,7 @@ export default async function SharedReportPage({
         } else if (raw && typeof raw === 'object') {
             results = (raw as any).pillars || [];
             priorityPlan = (raw as any).priority_action_plan || null;
+            growthStageAssessment = (raw as any).growth_stage_assessment || null;
         }
     }
 
@@ -146,6 +148,45 @@ export default async function SharedReportPage({
                 {/* Detailed Q&A Blocks */}
                 <div className="space-y-6">
                     <h3 className="text-lg font-medium text-white px-2">Detailed Analysis</h3>
+
+                    {/* Growth Stage Assessment — appears before Pillar 1 */}
+                    {growthStageAssessment && (
+                        <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+                            <div className="p-6 border-b border-white/10 bg-white/[0.02]">
+                                <div className="flex items-center space-x-3">
+                                    <TrendingUp className="w-5 h-5 text-indigo-400 flex-shrink-0" />
+                                    <h4 className="text-[15px] font-medium text-zinc-200">Growth Stage Assessment</h4>
+                                </div>
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <div>
+                                    <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Classified Stage</span>
+                                    <p className="mt-1 text-white font-semibold text-[15px]">{growthStageAssessment.classified_stage}</p>
+                                </div>
+                                {growthStageAssessment.signals && growthStageAssessment.signals.length > 0 && (
+                                    <div>
+                                        <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Classification Signals</span>
+                                        <ul className="mt-2 space-y-1 list-none pl-0">
+                                            {growthStageAssessment.signals.map((signal, sIdx) => (
+                                                <li key={sIdx} className="flex items-start space-x-2 text-sm text-zinc-400">
+                                                    <span className="text-indigo-400/50 mt-1 flex-shrink-0">•</span>
+                                                    <span className="leading-relaxed">{signal}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <div className="p-4 bg-amber-500/5 rounded-lg border border-amber-500/20">
+                                    <span className="text-xs font-semibold text-amber-400/70 uppercase tracking-wider">Dominant Crisis</span>
+                                    <p className="mt-1 text-zinc-400 text-sm leading-relaxed">{growthStageAssessment.crisis_status}</p>
+                                </div>
+                                <p className="text-zinc-400 text-sm leading-relaxed italic border-l-2 border-indigo-500/30 pl-4">
+                                    {growthStageAssessment.calibration_statement}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
                     {results.length === 0 && (
                         <div className="p-8 text-center text-zinc-500 bg-white/5 border border-white/10 rounded-xl">
                             <p className="text-sm">No detailed analysis blocks are available for this report.</p>

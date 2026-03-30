@@ -11,12 +11,13 @@ import {
     Loader2,
     User,
     Clock,
-    Target
+    Target,
+    TrendingUp
 } from 'lucide-react';
 import Link from 'next/link';
 import { DocumentActions } from '@/components/document-actions';
 import { AutoRefresh } from '@/components/auto-refresh';
-import type { ActionItem, StructuredResult } from '@/types';
+import type { ActionItem, GrowthStageAssessment, StructuredResult } from '@/types';
 
 interface AnalysisBlock {
     question: string;
@@ -72,6 +73,7 @@ export default async function DocumentPage({
     // Parse the structured JSON result (handles both legacy array and new object format)
     let results: AnalysisBlock[] = [];
     let priorityPlan: (ActionItem | string)[] | null = null;
+    let growthStageAssessment: GrowthStageAssessment | null = null;
 
     if (analysis?.structured_result) {
         if (Array.isArray(analysis.structured_result)) {
@@ -80,6 +82,7 @@ export default async function DocumentPage({
             const parsedObj = analysis.structured_result as unknown as StructuredResult;
             results = parsedObj.pillars || [];
             priorityPlan = parsedObj.priority_action_plan || null;
+            growthStageAssessment = parsedObj.growth_stage_assessment || null;
         }
     }
 
@@ -202,6 +205,45 @@ export default async function DocumentPage({
                     {/* Q&A Analysis Blocks */}
                     <div className="space-y-6">
                         <h3 className="text-lg font-medium text-[var(--text-primary)] px-2">Detailed Analysis</h3>
+
+                        {/* Growth Stage Assessment — appears before Pillar 1 */}
+                        {growthStageAssessment && (
+                            <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl overflow-hidden">
+                                <div className="p-6 border-b border-[var(--border-subtle)] bg-white/[0.02]">
+                                    <div className="flex items-center space-x-3">
+                                        <TrendingUp className="w-5 h-5 text-[var(--accent-indigo)] flex-shrink-0" />
+                                        <h4 className="text-[15px] font-medium text-[var(--text-primary)]">Growth Stage Assessment</h4>
+                                    </div>
+                                </div>
+                                <div className="p-6 space-y-4">
+                                    <div>
+                                        <span className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Classified Stage</span>
+                                        <p className="mt-1 text-[var(--text-primary)] font-semibold text-[15px]">{growthStageAssessment.classified_stage}</p>
+                                    </div>
+                                    {growthStageAssessment.signals && growthStageAssessment.signals.length > 0 && (
+                                        <div>
+                                            <span className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Classification Signals</span>
+                                            <ul className="mt-2 space-y-1 list-none pl-0">
+                                                {growthStageAssessment.signals.map((signal, sIdx) => (
+                                                    <li key={sIdx} className="flex items-start space-x-2 text-sm text-[var(--text-secondary)]">
+                                                        <span className="text-[var(--accent-indigo)]/50 mt-1 flex-shrink-0">•</span>
+                                                        <span className="leading-relaxed">{signal}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                    <div className="p-4 bg-amber-500/5 rounded-lg border border-amber-500/20">
+                                        <span className="text-xs font-semibold text-amber-400/70 uppercase tracking-wider">Dominant Crisis</span>
+                                        <p className="mt-1 text-[var(--text-secondary)] text-sm leading-relaxed">{growthStageAssessment.crisis_status}</p>
+                                    </div>
+                                    <p className="text-[var(--text-secondary)] text-sm leading-relaxed italic border-l-2 border-indigo-500/30 pl-4">
+                                        {growthStageAssessment.calibration_statement}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
                         {results.map((block, index) => (
                             <div key={index} className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-xl overflow-hidden hover:border-white/20 transition-colors">
                                 <div className="p-6 border-b border-[var(--border-subtle)] bg-white/[0.02]">

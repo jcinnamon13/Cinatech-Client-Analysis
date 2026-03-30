@@ -79,7 +79,15 @@ export interface ActionItem {
     time_horizon: string;
 }
 
+export interface GrowthStageAssessment {
+    classified_stage: string;
+    signals: string[];
+    crisis_status: string;
+    calibration_statement: string;
+}
+
 export interface StructuredResult {
+    growth_stage_assessment: GrowthStageAssessment;
     pillars: Pillar[];
     priority_action_plan: ActionItem[];
 }

@@ -166,6 +166,42 @@ When analysing the Revenue Model and Growth Trajectory pillar, you must assess t
 5. CAC PAYBACK PERIOD: Calculate or infer the CAC Payback Period, defined as CAC divided by average monthly gross margin per client. This measures how many months the business must retain a client before the cost of acquiring them is fully recovered. This is a cash flow and growth sustainability metric, distinct from CAC:LTV which is a profitability metric. Flag a payback period exceeding 6 months as a cash flow risk and state the consequence explicitly: a business growing rapidly with a payback period above 6 months is cash-flow negative on every new client for an extended period, and at scale this becomes a working capital constraint that profitability improvements alone cannot solve. Flag a payback period exceeding 12 months as a critical structural risk requiring immediate attention before acquisition is accelerated. Where gross margin data is unavailable, calculate against revenue per client as a proxy and note the limitation explicitly. Where no relevant figures are available, state the data gap explicitly. Absence of data is a finding and must not be skipped silently.
 
 ────────────────────────────────────────────────────────────────
+GROWTH STAGE CLASSIFICATION - GREINER GROWTH MODEL
+────────────────────────────────────────────────────────────────
+Before structuring any pillar output, classify the client's organisational growth stage using the Greiner Growth Model. This classification runs first, informs the sequencing of all recommendations, and produces a mandatory output block.
+
+THE FIVE STAGES:
+- Stage 1 - Growth through Creativity: founder-led, informal, no formal processes, entrepreneurial energy. Crisis: Leadership (the founder can no longer manage everything personally and the business needs professional management)
+- Stage 2 - Growth through Direction: first management structure in place, functional specialisation begins, directive leadership. Crisis: Autonomy (middle managers need more freedom than the centralised structure allows)
+- Stage 3 - Growth through Delegation: decentralised structure, profit centres, delegated authority. Crisis: Control (senior management loses control as the business grows through delegation)
+- Stage 4 - Growth through Coordination: formal systems, planning processes, cross-functional coordination mechanisms. Crisis: Red Tape (systems and procedures become bureaucratic and slow the business down)
+- Stage 5 - Growth through Collaboration: matrix structures, cultural alignment, flexible teams. Crisis: Complexity
+
+CLASSIFICATION PROCESS:
+Step 1 - Stage inference: Infer the client's Greiner growth stage from the following signals in the onboarding document:
+- Team size and org structure (sole trader, small team, functional departments, divisions)
+- Revenue scale and trajectory
+- Degree of founder/owner involvement in day-to-day operations and decisions
+- Presence or absence of formal systems, processes, and management layers
+- Whether strategy is described informally or through structured frameworks
+- How client relationships and delivery are managed (personally vs. systemised)
+
+Step 2 - Crisis identification: Having classified the stage, identify whether the client is currently experiencing the crisis associated with their stage, approaching it, or has recently resolved it. This is often the root cause of the problem they have described in their onboarding document.
+
+Step 3 - Report-wide calibration: Use the classified stage to:
+- Sequence recommendations appropriately: foundational actions for the current stage before scaling actions that assume a later stage
+- Flag explicitly where any recommendation assumes organisational capacity or infrastructure the client does not yet have at their current stage
+- Identify recommendations that are stage-appropriate vs. premature, and note this distinction clearly
+
+Step 4 - Output: Emit the classification as the "growth_stage_assessment" field in the JSON output. The content must fit within 150 words total across all four sub-fields. Sub-fields:
+- "classified_stage": The Greiner stage label (e.g. "Stage 2 - Growth through Direction")
+- "signals": An array of 2-4 brief entries naming specific evidence from the document that supports the classification
+- "crisis_status": One sentence naming whether the client is facing, approaching, or has recently resolved the stage crisis, followed by a plain-language commercial explanation of what this means for the business
+- "calibration_statement": One sentence stating how this stage classification has informed the sequencing and framing of the recommendations throughout the report
+
+This block is NOT a tenth pillar and must NOT appear in the pillars array. It is a separate top-level field emitted before the pillars array.
+
+────────────────────────────────────────────────────────────────
 TACTICAL SPECIFICITY STANDARD
 ────────────────────────────────────────────────────────────────
 Every recommendation must meet all five of the following criteria before it is included in the output. Any recommendation that cannot meet all five criteria must either be developed until it can, or moved to the flags array as an unresolved gap:
@@ -199,8 +235,8 @@ YOUR INSTRUCTIONS (CRITICAL: AVOID TOKEN OVERFLOW)
 ────────────────────────────────────────────────────────────────
 You have a hard output limit of 16,000 tokens. If you write overly long, run-on essays, your output will be truncated midway and the software will crash. You MUST balance comprehensive detail with conciseness.
 
-1. Read the entire document to understand the full context. Identify the most crucial business themes.
-2. Synthesise ALL crucial insights into core Strategic Pillars covering the required dimensions above. Ensure no crucial context is omitted.
+1. Read the entire document to understand the full context. Identify the most crucial business themes. Classify the client's Greiner growth stage per the GROWTH STAGE CLASSIFICATION section above before writing any pillar output.
+2. Synthesise ALL crucial insights into core Strategic Pillars covering the required dimensions above. Ensure no crucial context is omitted. Let the classified growth stage inform the sequencing and framing of every pillar.
 3. For the "question" field, write the name of the Strategic Pillar.
 4. For "original_response", extract NO MORE THAN 100 WORDS of core context. LIMIT: Maximum 100 words.
 5. For "improved_response", write the Agency Objective. LIMIT: Maximum 80 words.
@@ -210,6 +246,12 @@ You have a hard output limit of 16,000 tokens. If you write overly long, run-on 
 
 Return the result as a valid JSON object matching this structure strictly:
 {
+  "growth_stage_assessment": {
+    "classified_stage": "Stage N - Growth through [Phase]",
+    "signals": ["Specific signal from document 1", "Specific signal from document 2"],
+    "crisis_status": "One sentence on whether the client is facing, approaching, or has recently resolved the stage crisis, with a plain-language commercial explanation.",
+    "calibration_statement": "One sentence on how this classification has informed the sequencing and framing of the recommendations throughout this report."
+  },
   "pillars": [
     {
       "question": "The Strategic Pillar Name",
@@ -234,10 +276,10 @@ Return the result as a valid JSON object matching this structure strictly:
 IMPORTANT:
 - Output ONLY valid JSON.
 - Do not wrap the JSON in markdown code blocks.
-- The root must be a JSON object containing "pillars" and "priority_action_plan".
+- The root must be a JSON object containing "growth_stage_assessment", "pillars", and "priority_action_plan".
 - Do NOT use em dashes (—) anywhere in your output. Use commas, colons, hyphens, or full stops instead.`;
 
-export const SUMMARY_PROMPT = `Based on the Q&A analysis you just performed, write a concise Executive Summary of this client. Focus on their primary objective, their biggest hurdle, and the immediate strategic opportunity for the agency. Tone should be professional, objective, and insightful.
+export const SUMMARY_PROMPT = `Based on the Q&A analysis you just performed, write a concise Executive Summary of this client. Focus on their primary objective, their biggest hurdle, and the immediate strategic opportunity for the agency. After the statement identifying the client's single biggest hurdle, include one sentence naming the client's classified Greiner growth stage and its dominant crisis (as determined in the detailed analysis). Tone should be professional, objective, and insightful.
 
 IMPORTANT FORMATTING RULES:
 - EXECUTIVE SUMMARY LENGTH CONTROL: The executive summary must be written to a maximum of 250 words. This is a hard limit, not a guideline. If the content requires more than 250 words to cover the three required elements — opening context, problem identification, and strategic opportunity — condense each element rather than exceeding the limit. 

@@ -10,6 +10,13 @@ export class DocumentTooLargeError extends Error {
     }
 }
 
+const GrowthStageAssessmentSchema = z.object({
+    classified_stage: z.string(),
+    signals: z.array(z.string()),
+    crisis_status: z.string(),
+    calibration_statement: z.string(),
+});
+
 const PillarSchema = z.object({
     question: z.string(),
     original_response: z.string(),
@@ -28,6 +35,7 @@ const PriorityActionSchema = z.object({
 });
 
 const AnalysisOutputSchema = z.object({
+    growth_stage_assessment: GrowthStageAssessmentSchema,
     pillars: z.array(PillarSchema),
     priority_action_plan: z.array(PriorityActionSchema),
 });
