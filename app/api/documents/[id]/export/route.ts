@@ -54,6 +54,31 @@ function makeObjectiveBox(text: string): Table {
     });
 }
 
+// ── Helper: amber-bordered crisis box ──────────────────────────────────────
+function makeAmberBox(text: string): Table {
+    return new Table({
+        width: { size: CONTENT_W, type: WidthType.DXA },
+        columnWidths: [CONTENT_W],
+        borders: {
+            top:    { style: BorderStyle.NONE,  size: 0,  color: 'auto' },
+            bottom: { style: BorderStyle.NONE,  size: 0,  color: 'auto' },
+            right:  { style: BorderStyle.NONE,  size: 0,  color: 'auto' },
+            left:   { style: BorderStyle.THICK, size: 24, color: AMBER_H },
+        },
+        rows: [new TableRow({ children: [
+            new TableCell({
+                width: { size: CONTENT_W, type: WidthType.DXA },
+                shading: { type: ShadingType.CLEAR, fill: AMBER_R, color: 'auto' },
+                children: [
+                    new Paragraph({ children: [new TextRun({ text: 'Dominant Crisis', bold: true, color: AMBER_H })] }),
+                    new Paragraph({ children: [new TextRun(text)] }),
+                ],
+            }),
+        ]}),
+        ],
+    });
+}
+
 // ── Helper: numbered list table (recommendations / flags) ──────────────────
 function makeListTable(items: string[], headerText: string, headerBg: string, rowBg: string): Table {
     const headerRow = new TableRow({ children: [
@@ -185,6 +210,23 @@ async function buildDocx(
 
     // Detailed Analysis
     bodyChildren.push(new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun('Detailed Analysis')] }));
+
+    // Growth Stage Assessment
+    const gsa = structured.growth_stage_assessment;
+    if (gsa) {
+        bodyChildren.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('Growth Stage Assessment')] }));
+        bodyChildren.push(new Paragraph({ children: [new TextRun({ text: 'Classified Stage', bold: true })] }));
+        bodyChildren.push(new Paragraph({ children: [new TextRun(gsa.classified_stage)] }));
+        if (gsa.signals.length > 0) {
+            bodyChildren.push(makeListTable(gsa.signals, 'Classification Signals', INDIGO, INDIGO_L));
+        }
+        bodyChildren.push(makeAmberBox(gsa.crisis_status));
+        bodyChildren.push(new Paragraph({
+            border: { left: { style: BorderStyle.SINGLE, size: 12, color: INDIGO, space: 4 } },
+            children: [new TextRun({ text: gsa.calibration_statement, italics: true, color: GREY })],
+        }));
+        bodyChildren.push(new Paragraph({ children: [] }));
+    }
 
     for (const pillar of structured.pillars) {
         bodyChildren.push(new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun(pillar.question)] }));
@@ -325,6 +367,29 @@ async function buildPdf(
             doc.y = y + boxH + 4;
         }
 
+        function drawAmberBox(text: string): void {
+            const BORDER_W = 3;
+            const PAD      = 8;
+            const innerW   = CW - BORDER_W - PAD * 2;
+            const labelH   = doc.font('Helvetica-Bold').fontSize(10).currentLineHeight(true);
+            const textH    = doc.font('Helvetica').fontSize(10).heightOfString(text, { width: innerW, lineGap: 3 });
+            const boxH     = PAD + labelH + 4 + textH + PAD;
+
+            checkPageBreak(boxH + 8);
+            doc.moveDown(0.3);
+            const y = doc.y;
+
+            doc.rect(M, y, BORDER_W, boxH).fillColor(`#${AMBER_H}`).fill();
+            doc.rect(M + BORDER_W, y, CW - BORDER_W, boxH).fillColor(`#${PDF_AMBER_D}`).fill();
+
+            doc.font('Helvetica-Bold').fontSize(10).fillColor(`#${AMBER_H}`)
+               .text('Dominant Crisis:', M + BORDER_W + PAD, y + PAD, { width: innerW });
+            doc.font('Helvetica').fontSize(10).fillColor(`#${PDF_LIGHT}`)
+               .text(text, M + BORDER_W + PAD, y + PAD + labelH + 4, { width: innerW, lineGap: 3 });
+
+            doc.y = y + boxH + 4;
+        }
+
         function drawNumberedList(
             items: string[],
             headerText: string,
@@ -454,6 +519,32 @@ async function buildPdf(
         }
 
         drawH1('Detailed Analysis');
+
+        // Growth Stage Assessment
+        const gsaPdf = structured.growth_stage_assessment;
+        if (gsaPdf) {
+            drawH2('Growth Stage Assessment');
+            drawLabel('Classified Stage:');
+            drawBodyText(gsaPdf.classified_stage);
+            if (gsaPdf.signals.length > 0) {
+                doc.moveDown(0.3);
+                drawNumberedList(gsaPdf.signals, 'Classification Signals', INDIGO, PDF_OBJ_BG);
+            }
+            drawAmberBox(gsaPdf.crisis_status);
+            // Calibration statement — italic with indigo left rule
+            const CAL_PAD = 8;
+            const calW = CW - CAL_PAD * 2 - 3;
+            const calH = doc.font('Helvetica-Oblique').fontSize(10)
+                            .heightOfString(gsaPdf.calibration_statement, { width: calW, lineGap: 3 });
+            checkPageBreak(calH + 12);
+            doc.moveDown(0.4);
+            const calY = doc.y;
+            doc.moveTo(M, calY).lineTo(M, calY + calH + CAL_PAD).strokeColor(`#${INDIGO}`).lineWidth(2).stroke();
+            doc.font('Helvetica-Oblique').fontSize(10).fillColor(`#${PDF_LGREY}`)
+               .text(gsaPdf.calibration_statement, M + 3 + CAL_PAD, calY, { width: calW, lineGap: 3 });
+            doc.y = calY + calH + CAL_PAD + 4;
+            doc.moveDown(0.6);
+        }
 
         for (const pillar of structured.pillars) {
             drawH2(pillar.question);
